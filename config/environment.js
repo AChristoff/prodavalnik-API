@@ -2,14 +2,14 @@ const environment = process.env.NODE_ENV || 'development';
 
 const envConfig = {
     development: {
-        connectionString: process.env.DB_STRING || 'mongodb://localhost:27017/rest-api-db',
-        port: process.env.PORT || 3000,
-        jwtSecret: process.env.JWT_SECRET || 'somesupersecret',
+        connectionString: process.env.DB_STRING,
+        port: process.env.PORT,
+        jwtSecret: process.env.JWT_SECRET,
     },
     production: {
         connectionString: process.env.DB_STRING,
-        port: process.env.PORT || 3000,
-        jwtSecret: process.env.JWT_SECRET || 'somesupersecret',
+        port: process.env.PORT,
+        jwtSecret: process.env.JWT_SECRET,
     }
 };
 
