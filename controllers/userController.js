@@ -12,7 +12,7 @@ module.exports = {
             const {email} = req.body;
 
             const userToken = jwt.sign({email}, jwtSecret, {expiresIn: '24h'});
-            const confirmLink = `http://localhost:3000/user/register/confirm/${userToken}`;
+            const confirmLink = `${process.env.HOST}/user/register/confirm/${userToken}`;
 
             User.findOne({email: email})
                 .then((user) => {
@@ -307,7 +307,7 @@ module.exports = {
 
                     const userToken = jwt.sign({email}, jwtSecret, {expiresIn: '24h'});
 
-                    const resetLink = `http://localhost:3000/user/reset-password/${userToken}`;
+                    const resetLink = `${process.env.HOST}/user/reset-password/${userToken}`;
 
                     user.userToken = userToken;
                     user.save()
