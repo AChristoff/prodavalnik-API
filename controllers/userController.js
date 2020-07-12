@@ -12,7 +12,7 @@ module.exports = {
             const {email} = req.body;
 
             const userToken = jwt.sign({email}, jwtSecret, {expiresIn: '24h'});
-            const confirmLink = `${process.env.HOST}/user/register/confirm/${userToken}`;
+            const confirmLink = `${process.env.FRONT_END_URL}/user/register/confirm/${userToken}`;
 
             User.findOne({email: email})
                 .then((user) => {
@@ -103,6 +103,7 @@ module.exports = {
                             res.status(200).json(
                                 {
                                     message: 'User created successfully!',
+                                    username: name,
                                     token,
                                     userId: user._id.toString()
                                 });
@@ -160,6 +161,7 @@ module.exports = {
                     res.status(200).json(
                         {
                             message: 'User successfully logged in!',
+                            username: user.name,
                             token,
                             userId: user._id.toString()
                         });
@@ -307,7 +309,7 @@ module.exports = {
 
                     const userToken = jwt.sign({email}, jwtSecret, {expiresIn: '24h'});
 
-                    const resetLink = `${process.env.HOST}/user/reset-password/${userToken}`;
+                    const resetLink = `${process.env.FRONT_END_URL}/user/reset-password/${userToken}`;
 
                     user.userToken = userToken;
                     user.save()
