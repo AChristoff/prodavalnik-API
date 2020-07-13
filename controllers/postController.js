@@ -22,8 +22,8 @@ module.exports = {
     createPost: (req, res, next) => {
 
         if (validator(req, res)) {
-            const {title, content} = req.body;
-            const post = new Post({title, content, creator: req.userId});
+            const {title, subtitle, content, image} = req.body;
+            const post = new Post({title, subtitle, content, image, creator: req.userId});
             let creator;
 
             post.save()

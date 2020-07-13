@@ -7,9 +7,15 @@ const postSchema = new Schema(
             type: String,
             required: true
         },
+        subtitle: {
+            type: String,
+        },
         content: {
             type: String,
             required: true
+        },
+        image: {
+            type: String,
         },
         creator: {
             type: Schema.Types.ObjectId,
