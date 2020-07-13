@@ -151,7 +151,9 @@ module.exports = {
                     }
 
                     p.title = post.title;
+                    p.subtitle = post.subtitle;
                     p.content = post.content;
+                    p.image = post.image;
 
                     if (post.approval && isAdmin) {
                         p.approval = post.approval;
