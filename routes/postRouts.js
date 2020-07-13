@@ -20,7 +20,9 @@ router.put('/post/edit/:postId', restrictedPages.isAuth(),
 
 router.get('/post/:postId', postController.getPostById);
 
-router.get('/posts', postController.getPosts);
+router.get('/posts/all', postController.getPosts);
+
+router.get('/posts', restrictedPages.isAuth(), postController.getUserPosts);
 
 router.delete('/post/delete/:postId', restrictedPages.isAuth(), postController.deletePost);
 

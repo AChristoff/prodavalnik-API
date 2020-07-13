@@ -19,6 +19,22 @@ module.exports = {
                 next(error);
             });
     },
+    getUserPosts: (req, res, next) => {
+
+        Post.find({creator: req.userId})
+            .then((posts) => {
+                res
+                    .status(200)
+                    .json({message: 'User posts fetched successfully.', posts});
+            })
+            .catch((error) => {
+                if (!error.statusCode) {
+                    error.statusCode = 500;
+                }
+
+                next(error);
+            });
+    },
     createPost: (req, res, next) => {
 
         if (validator(req, res)) {
