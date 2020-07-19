@@ -20,7 +20,7 @@ router.put('/post/edit/:postId', restrictedPages.isAuth(),
 
 router.get('/post/:postId', postController.getPostById);
 
-router.get('/posts/all', postController.getPosts);
+router.get('/posts/all/:page/:resPerPage', postController.getPosts);
 
 router.get('/posts', restrictedPages.isAuth(), postController.getUserPosts);
 

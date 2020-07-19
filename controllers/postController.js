@@ -4,20 +4,25 @@ const User = require('../models/User');
 
 module.exports = {
     getPosts: (req, res, next) => {
+        //pagination
+        const page = Number(req.params.page);
+        const resPerPage = Number(req.params.resPerPage);
 
         Post.find()
-            .then((posts) => {
-                res
-                    .status(200)
-                    .json({message: 'Fetched posts successfully.', posts});
-            })
-            .catch((error) => {
-                if (!error.statusCode) {
-                    error.statusCode = 500;
-                }
+          .skip((resPerPage * page) - resPerPage)
+          .limit(resPerPage)
+          .then((posts) => {
+              res
+                .status(200)
+                .json({message: 'Fetched posts successfully.', posts});
+          })
+          .catch((error) => {
+              if (!error.statusCode) {
+                  error.statusCode = 500;
+              }
 
-                next(error);
-            });
+              next(error);
+          });
     },
     getUserPosts: (req, res, next) => {
 
