@@ -162,6 +162,7 @@ module.exports = {
                         {
                             message: 'User successfully logged in!',
                             username: user.name,
+                            role: user.role,
                             token,
                             userId: user._id.toString()
                         });

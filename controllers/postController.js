@@ -13,6 +13,18 @@ module.exports = {
         const sortCriteria = {[sortBy]: order};
         //filter
         const filterCriteria = req.query;
+      //search
+      // const searchCriteria = req.params.search;
+      // console.log(searchCriteria);
+      //
+      //
+      // Post.find({
+      //   $and: [
+      //     {title: {$regex: new RegExp(searchCriteria)}},
+      //     {subtitle: {$regex: new RegExp(searchCriteria)}},
+      //     {content: {$regex: new RegExp(searchCriteria)}},
+      //   ],
+      // })
 
         Post.find(filterCriteria)
           .sort(sortCriteria)
