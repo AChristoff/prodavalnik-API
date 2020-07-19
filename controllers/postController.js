@@ -7,8 +7,13 @@ module.exports = {
         //pagination
         const page = Number(req.params.page);
         const resPerPage = Number(req.params.resPerPage);
+        //search
+        const sortBy = req.params.sortBy || 'createdAt';
+        const order = req.params.order || '1';
+        const sortCriteria = {[sortBy]: order};
 
         Post.find()
+          .sort(sortCriteria)
           .skip((resPerPage * page) - resPerPage)
           .limit(resPerPage)
           .then((posts) => {
