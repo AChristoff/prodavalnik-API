@@ -6,16 +6,18 @@ module.exports = {
     getPosts: (req, res, next) => {
         //pagination
         const page = Number(req.params.page);
-        const resPerPage = Number(req.params.resPerPage);
-        //search
+        const limit = Number(req.params.limit);
+        //sort
         const sortBy = req.params.sortBy || 'createdAt';
         const order = req.params.order || '1';
         const sortCriteria = {[sortBy]: order};
+        //filter
+        const filterCriteria = req.query;
 
-        Post.find()
+        Post.find(filterCriteria)
           .sort(sortCriteria)
-          .skip((resPerPage * page) - resPerPage)
-          .limit(resPerPage)
+          .skip((limit * page) - limit)
+          .limit(limit)
           .then((posts) => {
               res
                 .status(200)
