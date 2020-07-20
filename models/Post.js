@@ -6,23 +6,14 @@ const postSchema = new Schema(
     title: {
       type: String,
       required: true,
-      unique: false,
-      index: true,
-      text: true
     },
     subtitle: {
       type: String,
       required: true,
-      unique: false,
-      index: true,
-      text: true
     },
     content: {
       type: String,
       required: true,
-      unique: false,
-      index: true,
-      text: true
     },
     image: {
       type: String,
@@ -42,5 +33,7 @@ const postSchema = new Schema(
     timestamps: true
   }
 );
+
+postSchema.index({ title: 'text', subtitle: 'text', content: 'text'});
 
 module.exports = mongoose.model('Post', postSchema);
