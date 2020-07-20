@@ -14,11 +14,12 @@ module.exports = {
     //filter
     const filterCriteria = req.query;
     //search
-    //const searchCriteria = req.params.search;
-    //
-    //Post.find({$text: {$search: searchCriteria}})
+    const searchCriteria = req.params.search;
 
-    Post.find(filterCriteria)
+    Post.find({
+      $text: {$search: searchCriteria},
+      ...filterCriteria
+    })
       .sort(sortCriteria)
       .skip((limit * page) - limit)
       .limit(limit)
