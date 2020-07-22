@@ -5,20 +5,20 @@ const User = require('../models/User');
 module.exports = {
   getPosts: (req, res, next) => {
     //pagination
-    const page = Number(req.params.page);
-    const limit = Number(req.params.limit);
+    const page = Number(req.params.page) || '1';
+    const limit = Number(req.params.limit) || '6';
     //sort
     const sortBy = req.params.sortBy || 'createdAt';
     const order = req.params.order || '1';
     const sortCriteria = {[sortBy]: order};
     //filter
-    const filterCriteria = req.query;
+    const filterCriteria = req.query || '';
     //search
-    const searchCriteria = req.params.search;
+    const searchCriteria = req.params.search ? {$text: {$search: req.params.search}} : '';
 
     Post.find({
-      $text: {$search: searchCriteria},
-      ...filterCriteria
+      ...searchCriteria,
+      ...filterCriteria,
     })
       .sort(sortCriteria)
       .skip((limit * page) - limit)
@@ -55,8 +55,8 @@ module.exports = {
   createPost: (req, res, next) => {
 
     if (validator(req, res)) {
-      const {title, subtitle, content, image} = req.body;
-      const post = new Post({title, subtitle, content, image, creator: req.userId});
+      const {title, subtitle, content, price, image} = req.body;
+      const post = new Post({title, subtitle, content, price, image, creator: req.userId});
       let creator;
 
       post.save()
@@ -170,6 +170,7 @@ module.exports = {
           p.title = post.title;
           p.subtitle = post.subtitle;
           p.content = post.content;
+          p.price = post.price;
           p.image = post.image;
 
           if (post.approval && isAdmin) {

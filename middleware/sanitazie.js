@@ -45,6 +45,14 @@ const sanitizeTitle = (fieldName) => {
         .escape()
 };
 
+const sanitizeSubTitle = (fieldName) => {
+    return body(fieldName)
+      .trim()
+      .not()
+      .isEmpty().withMessage('SubTitle is required')
+      .escape()
+};
+
 const sanitizeContent = (fieldName) => {
     return body(fieldName)
         .trim()
@@ -53,10 +61,21 @@ const sanitizeContent = (fieldName) => {
         .escape()
 };
 
+const sanitizePrice = (fieldName) => {
+    return body(fieldName)
+      .trim()
+      .not()
+      .isEmpty().withMessage('Price is required')
+      .isDecimal().withMessage('Price must be a decimal number')
+      .escape()
+};
+
 module.exports = {
     sanitizeEmail,
     sanitizePassword,
     sanitizeName,
     sanitizeTitle,
-    sanitizeContent
+    sanitizeSubTitle,
+    sanitizeContent,
+    sanitizePrice,
 };

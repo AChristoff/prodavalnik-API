@@ -1,26 +1,30 @@
 const router = require('express').Router();
 const postController = require('../controllers/postController');
 const restrictedPages = require('../middleware/authenticate');
-const {sanitizeTitle, sanitizeContent} = require('../middleware/sanitazie');
+const {sanitizeTitle, sanitizeSubTitle, sanitizeContent, sanitizePrice} = require('../middleware/sanitazie');
 
 
 router.post('/post/create', restrictedPages.isAuth(),
-    [
-        sanitizeTitle('title'),
-        sanitizeContent('content'),
-    ],
-    postController.createPost);
+  [
+    sanitizeTitle('title'),
+    sanitizeSubTitle('subtitle'),
+    sanitizeContent('content'),
+    sanitizePrice('price'),
+  ],
+  postController.createPost);
 
 router.put('/post/edit/:postId', restrictedPages.isAuth(),
-    [
-        sanitizeTitle('title'),
-        sanitizeContent('content'),
-    ],
-    postController.editPost);
+  [
+    sanitizeTitle('title'),
+    sanitizeSubTitle('subtitle'),
+    sanitizeContent('content'),
+    sanitizePrice('price'),
+  ],
+  postController.editPost);
 
 router.get('/post/:postId', postController.getPostById);
 
-router.get('/posts/all/:page/:limit/:search?/:sortBy?/:order?/:filters?', postController.getPosts);
+router.get('/posts/all/:page/:limit/:sortBy?/:order?/:search?/:filters?', postController.getPosts);
 
 router.get('/posts', restrictedPages.isAuth(), postController.getUserPosts);
 
