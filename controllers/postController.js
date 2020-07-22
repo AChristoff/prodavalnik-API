@@ -5,8 +5,8 @@ const User = require('../models/User');
 module.exports = {
   getPosts: (req, res, next) => {
     //pagination
-    const page = Number(req.params.page) || '1';
-    const limit = Number(req.params.limit) || '6';
+    const page = Number(req.params.page) || 1;
+    const limit = Number(req.params.limit) || 6;
     //sort
     const sortBy = req.params.sortBy || 'createdAt';
     const order = req.params.order || '1';

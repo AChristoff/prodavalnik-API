@@ -24,7 +24,7 @@ router.put('/post/edit/:postId', restrictedPages.isAuth(),
 
 router.get('/post/:postId', postController.getPostById);
 
-router.get('/posts/all/:page/:limit/:sortBy?/:order?/:search?/:filters?', postController.getPosts);
+router.get('/posts/all/:page?/:limit?/:sortBy?/:order?/:search?/:filters?', postController.getPosts);
 
 router.get('/posts', restrictedPages.isAuth(), postController.getUserPosts);
 
