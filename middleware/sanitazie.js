@@ -48,8 +48,6 @@ const sanitizeTitle = (fieldName) => {
 const sanitizeSubTitle = (fieldName) => {
     return body(fieldName)
       .trim()
-      .not()
-      .isEmpty().withMessage('SubTitle is required')
       .escape()
 };
 
@@ -59,6 +57,14 @@ const sanitizeContent = (fieldName) => {
         .not()
         .isEmpty().withMessage('Content is required')
         .escape()
+};
+
+const sanitizeCategory = (fieldName) => {
+    return body(fieldName)
+      .trim()
+      .not()
+      .isEmpty().withMessage('Category is required')
+      .escape()
 };
 
 const sanitizePrice = (fieldName) => {
@@ -77,5 +83,6 @@ module.exports = {
     sanitizeTitle,
     sanitizeSubTitle,
     sanitizeContent,
+    sanitizeCategory,
     sanitizePrice,
 };

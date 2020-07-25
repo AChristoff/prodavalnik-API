@@ -156,7 +156,7 @@ module.exports = {
                             userId: user._id.toString()
                         },
                         jwtSecret,
-                        {expiresIn: '1h'});
+                        {expiresIn: '24h'});
 
                     res.status(200).json(
                         {

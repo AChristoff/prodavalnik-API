@@ -9,6 +9,10 @@ const postSchema = new Schema(
     },
     subtitle: {
       type: String,
+      required: false,
+    },
+    category: {
+      type: String,
       required: true,
     },
     content: {
@@ -38,6 +42,6 @@ const postSchema = new Schema(
   }
 );
 
-postSchema.index({ title: 'text', subtitle: 'text', content: 'text'});
+postSchema.index({ title: 'text', subtitle: 'text', category:'text', content: 'text'});
 
 module.exports = mongoose.model('Post', postSchema);

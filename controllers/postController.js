@@ -55,8 +55,8 @@ module.exports = {
   createPost: (req, res, next) => {
 
     if (validator(req, res)) {
-      const {title, subtitle, content, price, image} = req.body;
-      const post = new Post({title, subtitle, content, price, image, creator: req.userId});
+      const {title, subtitle, content, category, price, image} = req.body;
+      const post = new Post({title, subtitle, content, category, price, image, creator: req.userId});
       let creator;
 
       post.save()
@@ -170,6 +170,7 @@ module.exports = {
           p.title = post.title;
           p.subtitle = post.subtitle;
           p.content = post.content;
+          p.category = post.category;
           p.price = post.price;
           p.image = post.image;
 
