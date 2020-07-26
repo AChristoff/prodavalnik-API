@@ -42,6 +42,23 @@ const postSchema = new Schema(
   }
 );
 
-postSchema.index({ title: 'text', category:'text', content: 'text'});
+postSchema.index(
+  {
+    title: 'text',
+    subtitle: 'text',
+    category: 'text',
+    content: 'text'
+  },
+  {
+    name: "posts_fts",
+    weights:
+      {
+        title: 10,
+        subtitle: 5,
+        category: 3,
+        content: 1,
+      }
+  }
+);
 
 module.exports = mongoose.model('Post', postSchema);

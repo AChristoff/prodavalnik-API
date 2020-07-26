@@ -5,7 +5,8 @@ mongoose.Promise = global.Promise;
 async function initializeDataBase(connectionString) {
     await mongoose.connect(connectionString, {
         useUnifiedTopology: true,
-        useNewUrlParser: true
+        useCreateIndex: true,
+        useNewUrlParser: true,
     });
 
     const db = await mongoose.connection;
