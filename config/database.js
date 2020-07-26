@@ -2,13 +2,13 @@ const mongoose = require('mongoose');
 const User = require('../models/User');
 
 mongoose.Promise = global.Promise;
-function initializeDataBase(connectionString) {
-    mongoose.connect(connectionString, {
+async function initializeDataBase(connectionString) {
+    await mongoose.connect(connectionString, {
         useUnifiedTopology: true,
         useNewUrlParser: true
     });
 
-    const db = mongoose.connection;
+    const db = await mongoose.connection;
 
     db.once('open', err => {
         if (err) {

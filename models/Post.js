@@ -42,6 +42,6 @@ const postSchema = new Schema(
   }
 );
 
-postSchema.index({ title: 'text', subtitle: 'text', category:'text', content: 'text'});
+postSchema.index({ title: 'text', category:'text', content: 'text'});
 
 module.exports = mongoose.model('Post', postSchema);
