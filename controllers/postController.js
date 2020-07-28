@@ -7,6 +7,7 @@ module.exports = {
     //pagination
     const page = Number(req.params.page) || 1;
     const limit = Number(req.params.limit) || 6;
+    let postsCount = 0;
     //sort
     const sortBy = req.params.sortBy || 'createdAt';
     const order = req.params.order || '1';
@@ -20,19 +21,33 @@ module.exports = {
       ...searchCriteria,
       ...filterCriteria,
     })
-      .sort(sortCriteria)
-      .skip((limit * page) - limit)
-      .limit(limit)
       .then((posts) => {
-        res
-          .status(200)
-          .json({message: 'Fetched posts successfully.', posts});
+        postsCount = posts.length || 0;
       })
       .catch((error) => {
         if (!error.statusCode) {
           error.statusCode = 500;
         }
+        next(error);
+      });
 
+    Post.find({
+      ...searchCriteria,
+      ...filterCriteria,
+    }).sort(sortCriteria)
+      .skip((limit * page) - limit)
+      .limit(limit)
+      .then((posts) => {
+        res.status(200).json({
+          message: 'Fetched posts successfully.',
+          count: postsCount,
+          posts,
+        });
+      })
+      .catch((error) => {
+        if (!error.statusCode) {
+          error.statusCode = 500;
+        }
         next(error);
       });
   },
