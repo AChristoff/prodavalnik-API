@@ -15,7 +15,8 @@ module.exports = {
     //filter
     const filterCriteria = req.query || '';
     //search
-    const searchCriteria = req.params.search ? {$text: {$search: req.params.search}} : '';
+    let searchCriteria = req.params.search.replace('search=', '');
+    searchCriteria = searchCriteria ? {$text: {$search: searchCriteria}} : '';
 
     Post.find({
       ...searchCriteria,
