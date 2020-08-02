@@ -27,6 +27,14 @@ router.post('/login',
     ],
     userController.login);
 
+
+router.get('/profile', restrictedPages.isAuth(),
+  [
+    sanitizeEmail('email', 'required'),
+  ],
+  userController.getUserDetails
+);
+
 router.put('/edit', restrictedPages.isAuth(),
     [
         body('email').isEmail().withMessage('Please enter a valid email!'),
