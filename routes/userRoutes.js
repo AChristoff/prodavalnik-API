@@ -39,7 +39,7 @@ router.put('/edit', restrictedPages.isAuth(),
     [
         body('email').isEmail().withMessage('Please enter a valid email!'),
         sanitizePassword('password', 'required'),
-        sanitizeEmail('newEmail'),
+        // sanitizeEmail('newEmail'),
         sanitizePassword('newPassword'),
         sanitizeName('name')
     ],

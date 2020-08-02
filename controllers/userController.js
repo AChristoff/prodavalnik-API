@@ -207,7 +207,7 @@ module.exports = {
           }
 
           if (!user.authenticate(password)) {
-            const error = new Error('Invalid credentials!');
+            const error = new Error('Invalid credentials! Wrong password!');
 
             error.statusCode = 401;
             error.param = 'password';
