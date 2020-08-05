@@ -326,7 +326,6 @@ module.exports = {
           }
 
           const userToken = jwt.sign({email}, jwtSecret, {expiresIn: '24h'});
-
           const resetLink = `${process.env.FRONT_END_URL}/user/reset-password/${userToken}`;
 
           user.userToken = userToken;
