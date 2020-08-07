@@ -26,6 +26,10 @@ const postSchema = new Schema(
     image: {
       type: String,
     },
+    watched: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+    },
     creator: {
       type: Schema.Types.ObjectId,
       ref: 'User',

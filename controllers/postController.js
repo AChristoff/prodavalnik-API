@@ -68,6 +68,35 @@ module.exports = {
         next(error);
       });
   },
+  getFavoritesPosts: (req, res, next) => {
+
+    User.findOne({_id: req.userId})
+      .then((user) => {
+
+        Post.find({_id: {$in: user.favorites}})
+          .then((posts) => {
+            res
+              .status(200)
+              .json({
+                message: 'Favorite posts fetched successfully.',
+                posts,
+                count: user.favorites.length,
+              });
+          })
+          .catch((error) => {
+            if (!error.statusCode) {
+              error.statusCode = 500;
+            }
+            next(error);
+          });
+      })
+      .catch((error) => {
+        if (!error.statusCode) {
+          error.statusCode = 500;
+        }
+        next(error);
+      });
+  },
   createPost: (req, res, next) => {
 
     if (validator(req, res)) {

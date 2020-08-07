@@ -28,6 +28,8 @@ module.exports = {
 
     let {offerId} = req.body;
 
+    console.log(offerId);
+
     User.findOne({_id: req.userId})
       .then((user) => {
 

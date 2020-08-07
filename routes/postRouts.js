@@ -30,6 +30,8 @@ router.get('/posts/all/:page?/:limit?/:sortBy?/:order?/:search?/:filters?', post
 
 router.get('/posts', restrictedPages.isAuth(), postController.getUserPosts);
 
+router.get('/favorites', restrictedPages.isAuth(), postController.getFavoritesPosts);
+
 router.delete('/post/delete/:postId', restrictedPages.isAuth(), postController.deletePost);
 
 module.exports = router;
