@@ -26,7 +26,7 @@ module.exports = {
             .then(() => {
 
                 res.status(200).json({
-                    message: 'Verification email was successfully sent!',
+                    message: 'Verification email was sent!',
                 });
             })
             .catch((error) => {

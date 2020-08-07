@@ -389,11 +389,24 @@ module.exports = {
           user.hashedPassword = encryption.generateHashedPassword(user.salt, newPassword);
           user.userToken = '';
 
+          const token = jwt.sign(
+            {
+              role: user.role,
+              name: user.name,
+              email,
+              userId: user._id.toString()
+            },
+            jwtSecret,
+            {expiresIn: '24h'});
+
           user.save()
             .then(() => {
               res.status(200).json(
                 {
                   message: 'User password has been reset successfully!',
+                  username: user.name,
+                  role: user.role,
+                  token,
                   userId: user._id
                 });
 

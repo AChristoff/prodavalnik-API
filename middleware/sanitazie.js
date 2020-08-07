@@ -11,7 +11,7 @@ const sanitizeEmail = (fieldName, isRequired) => {
             return User.findOne({email: value})
                 .then(user => {
                     if (user && user.confirmed === true) {
-                        return Promise.reject('E-Mail address already exists!');
+                        return Promise.reject('This email address already exists!');
                     }
                 })
         })
