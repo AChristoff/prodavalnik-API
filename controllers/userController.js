@@ -1,6 +1,7 @@
 const {validationResult} = require('express-validator');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const Post = require('../models/Post');
 const encryption = require('../util/encryption');
 const mailer = require('../util/mailer');
 const {jwtSecret} = require('../config/environment');
@@ -33,14 +34,38 @@ module.exports = {
     User.findOne({_id: req.userId})
       .then((user) => {
 
-        user.favorites.push(offerId);
-        user.save();
+        // user.favorites.push(offerId);
+        // user.save();
 
-        res
-          .status(200)
-          .json({
-            message: 'The offer was successfully added to favorites!',
-            offerId,
+        console.log('user');
+        // res
+        //   .status(200)
+        //   .json({
+        //     message: 'The offer was successfully added to favorites!',
+        //     offerId,
+        //   });
+        Post.findOne({_id: offerId})
+          .then((post) => {
+
+            console.log(req.userId);
+            console.log(post);
+            console.log(post.watched);
+            post.watched.push(req.userId);
+            post.save();
+
+            res
+              .status(200)
+              .json({
+                message: 'The offer was successfully added to favorites!',
+                offerId,
+              });
+          })
+          .catch((error) => {
+            if (!error.statusCode) {
+              error.statusCode = 500;
+            }
+
+            next(error);
           });
       })
       .catch((error) => {
