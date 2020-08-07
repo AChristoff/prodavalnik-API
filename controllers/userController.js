@@ -24,6 +24,56 @@ module.exports = {
         next(error);
       });
   },
+  addFavoriteOffer: (req, res, next) => {
+
+    let {offerId} = req.body;
+
+    User.findOne({_id: req.userId})
+      .then((user) => {
+
+        user.favorites.push(offerId);
+        user.save();
+
+        res
+          .status(200)
+          .json({
+            message: 'The offer was successfully added to favorites!',
+            offerId,
+          });
+      })
+      .catch((error) => {
+        if (!error.statusCode) {
+          error.statusCode = 500;
+        }
+
+        next(error);
+      });
+  },
+  removeFavoriteOffer: (req, res, next) => {
+
+    let {offerId} = req.body;
+
+    User.findOne({_id: req.userId})
+      .then((user) => {
+
+        user.favorites.pull(offerId);
+        user.save();
+
+        res
+          .status(200)
+          .json({
+            message: 'The offer was successfully removed from favorites!',
+            offerId,
+          });
+      })
+      .catch((error) => {
+        if (!error.statusCode) {
+          error.statusCode = 500;
+        }
+
+        next(error);
+      });
+  },
   register: (req, res, next) => {
     if (validator(req, res)) {
       const {email} = req.body;

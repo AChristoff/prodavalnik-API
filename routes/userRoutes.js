@@ -35,6 +35,10 @@ router.get('/profile', restrictedPages.isAuth(),
   userController.getUserDetails
 );
 
+router.put('/favorites/add', restrictedPages.isAuth(), userController.addFavoriteOffer);
+
+router.put('/favorites/remove', restrictedPages.isAuth(), userController.removeFavoriteOffer);
+
 router.put('/edit', restrictedPages.isAuth(),
     [
         body('email').isEmail().withMessage('Please enter a valid email!'),
