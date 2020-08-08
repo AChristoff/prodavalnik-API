@@ -32,6 +32,15 @@ module.exports = {
     User.findOne({_id: req.userId})
       .then((user) => {
 
+        if (user.favorites.includes(offerId)) {
+          return res
+            .status(405)
+            .json({
+              message: 'This offer is already in your favorites!',
+              offerId,
+            });
+        }
+
         user.favorites.push(offerId);
         user.save();
 
@@ -55,6 +64,7 @@ module.exports = {
 
             next(error);
           });
+
       })
       .catch((error) => {
         if (!error.statusCode) {
@@ -74,11 +84,25 @@ module.exports = {
         user.favorites.pull(offerId);
         user.save();
 
-        res
-          .status(200)
-          .json({
-            message: 'The offer was successfully removed from favorites!',
-            offerId,
+        Post.findById(offerId)
+          .then((post) => {
+
+            post.watched.pull(user._id);
+            post.save();
+
+            res
+              .status(200)
+              .json({
+                message: 'The offer was successfully removed from favorites!',
+                offerId,
+              });
+          })
+          .catch((error) => {
+            if (!error.statusCode) {
+              error.statusCode = 500;
+            }
+
+            next(error);
           });
       })
       .catch((error) => {
