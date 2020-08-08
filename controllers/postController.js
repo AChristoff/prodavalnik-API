@@ -69,11 +69,28 @@ module.exports = {
       });
   },
   getFavoritesPosts: (req, res, next) => {
+    //pagination
+    const page = Number(req.params.page) || 1;
+    const limit = Number(req.params.limit) || 6;
+    //sort
+    const sortBy = req.params.sortBy || 'createdAt';
+    const order = req.params.order || '1';
+    const sortCriteria = {[sortBy]: order};
+    //filter
+    const filterCriteria = req.query || '';
+    //search
+    let searchCriteria = req.params.search.replace('search=', '');
+    searchCriteria = searchCriteria ? {$text: {$search: searchCriteria}} : '';
 
     User.findOne({_id: req.userId})
       .then((user) => {
-
-        Post.find({_id: {$in: user.favorites}})
+        Post.find({
+          _id: {$in: user.favorites},
+          ...searchCriteria,
+          ...filterCriteria,
+        }).sort(sortCriteria)
+          .skip((limit * page) - limit)
+          .limit(limit)
           .then((posts) => {
             res
               .status(200)
