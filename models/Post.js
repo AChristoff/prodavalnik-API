@@ -27,16 +27,8 @@ const postSchema = new Schema(
       type: String,
     },
     watched: [{type: Schema.Types.ObjectId, ref: 'User'}],
-    creator: {
-      type: Schema.Types.ObjectId,
-      ref: 'User',
-      required: true
-    },
-    approval: {
-      type: Schema.Types.Boolean,
-      default: false
-    }
-
+    creator: {type: Schema.Types.ObjectId, ref: 'User', required: true},
+    approval: {type: Schema.Types.Boolean, default: false}
   },
   {
     timestamps: true
@@ -48,7 +40,7 @@ postSchema.index(
     title: 'text',
     subtitle: 'text',
     category: 'text',
-    content: 'text'
+    content: 'text',
   },
   {
     name: "posts_fts",

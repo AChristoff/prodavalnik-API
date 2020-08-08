@@ -29,28 +29,16 @@ module.exports = {
 
     let {offerId} = req.body;
 
-    console.log(offerId);
-
     User.findOne({_id: req.userId})
       .then((user) => {
 
-        // user.favorites.push(offerId);
-        // user.save();
+        user.favorites.push(offerId);
+        user.save();
 
-        console.log('user');
-        // res
-        //   .status(200)
-        //   .json({
-        //     message: 'The offer was successfully added to favorites!',
-        //     offerId,
-        //   });
-        Post.findOne({_id: offerId})
+        Post.findById(offerId)
           .then((post) => {
 
-            console.log(req.userId);
-            console.log(post);
-            console.log(post.watched);
-            post.watched.push(req.userId);
+            post.watched.push(user._id);
             post.save();
 
             res

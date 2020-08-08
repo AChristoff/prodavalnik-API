@@ -63,7 +63,8 @@ User.seedAdmin = async () => {
       salt,
       userToken: '',
       confirmed: true,
-      posts: []
+      posts: [],
+      favorites: [],
     });
   } catch (e) {
     console.error(e);
