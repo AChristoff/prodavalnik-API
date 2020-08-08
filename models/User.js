@@ -26,6 +26,7 @@ const userSchema = new Schema(
     },
     confirmed: Schema.Types.Boolean,
     posts: [{type: Schema.Types.ObjectId, ref: 'Post'}],
+    comments: [{type: Schema.Types.ObjectId, ref: 'Comment'}],
     favorites: [{type: Schema.Types.ObjectId, ref: 'Post'}],
   },
   {
@@ -64,6 +65,7 @@ User.seedAdmin = async () => {
       userToken: '',
       confirmed: true,
       posts: [],
+      comments: [],
       favorites: [],
     });
   } catch (e) {

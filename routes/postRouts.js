@@ -26,6 +26,12 @@ router.put('/post/edit/:postId', restrictedPages.isAuth(),
 
 router.get('/post/:postId', postController.getPostById);
 
+router.post('/post/:postId', restrictedPages.isAuth(),
+  [
+    sanitizeContent('content'),
+  ],
+  postController.createComment);
+
 router.get('/posts/all/:page?/:limit?/:sortBy?/:order?/:search?/:filters?', postController.getPosts);
 
 router.get('/posts', restrictedPages.isAuth(), postController.getUserPosts);

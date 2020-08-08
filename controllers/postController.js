@@ -1,6 +1,7 @@
 const {validationResult} = require('express-validator');
 const Post = require('../models/Post');
 const User = require('../models/User');
+const Comment = require('../models/Comment');
 
 module.exports = {
   getPosts: (req, res, next) => {
@@ -258,7 +259,38 @@ module.exports = {
           next(error);
         });
     }
-  }
+  },
+  createComment: async (req, res, next) => {
+
+    if (validator(req, res)) {
+      const postId = req.params.postId;
+      const userId = req.userId;
+      const content = req.body.content;
+
+      try {
+        const comment = await new Comment({post: postId, user: userId, content: content});
+        comment.save();
+
+        const user = await User.findById(userId);
+        user.comments.push(comment._id);
+        await user.save();
+
+        res
+          .status(201)
+          .json({
+            message: 'Comment created successfully!',
+            comment: comment,
+            creator: userId,
+          })
+      } catch (error) {
+        if (!error.statusCode) {
+          error.statusCode = 500;
+        }
+
+        next(error);
+      }
+    }
+  },
 };
 
 function validator(req, res) {
