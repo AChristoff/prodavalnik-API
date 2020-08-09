@@ -32,6 +32,8 @@ router.post('/post/:postId', restrictedPages.isAuth(),
   ],
   postController.createComment);
 
+router.get('/post/:postId/comments', postController.getComments);
+
 router.get('/posts/all/:page?/:limit?/:sortBy?/:order?/:search?/:filters?', postController.getPosts);
 
 router.get('/posts', restrictedPages.isAuth(), postController.getUserPosts);

@@ -291,6 +291,33 @@ module.exports = {
       }
     }
   },
+  getComments: (req, res, next) => {
+
+    if (validator(req, res)) {
+      const postId = req.params.postId;
+
+      Comment.find({post: postId})
+        .then((comments) => {
+
+          if (!comments.length) {
+            res
+              .status(404)
+              .json({message: 'No comments found!', comments});
+          }
+
+          res
+            .status(200)
+            .json({message: 'Comments fetched successfully.', comments});
+        })
+        .catch((error) => {
+          if (!error.statusCode) {
+            error.statusCode = 500;
+          }
+
+          next(error);
+        });
+    }
+  },
 };
 
 function validator(req, res) {
