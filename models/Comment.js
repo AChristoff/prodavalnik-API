@@ -21,6 +21,10 @@ const commentSchema = new Schema(
       maxlength: 400,
       required: true,
     },
+    author: {
+      type: Schema.Types.String,
+      required: true,
+    },
     approval: {
       type: Schema.Types.Boolean,
       default: false

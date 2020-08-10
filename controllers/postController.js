@@ -268,7 +268,8 @@ module.exports = {
       const content = req.body.content;
 
       try {
-        const comment = await new Comment({post: postId, user: userId, content: content});
+        const {name} = await User.findById(userId);
+        const comment = await new Comment({post: postId, user: userId, content: content, author: name});
         comment.save();
 
         const user = await User.findById(userId);
@@ -297,6 +298,7 @@ module.exports = {
       const postId = req.params.postId;
 
       Comment.find({post: postId})
+        .sort({createdAt: '-1'})
         .then((comments) => {
 
           if (!comments.length) {
