@@ -182,7 +182,7 @@ module.exports = {
             const error = new Error('Unauthorized');
 
             error.statusCode = 401;
-            error.param = 'Invalid token!';
+            error.param = 'Invalid token! Your token might bet expired, or you requested a newer one!';
             throw error;
           }
 
@@ -284,7 +284,7 @@ module.exports = {
   },
   edit: (req, res, next) => {
     if (validator(req, res)) {
-      const {email, password, newEmail, newPassword, name} = req.body;
+      const {email, password, newPassword, name} = req.body;
 
       User.findOne({email: email})
         .then((user) => {
@@ -303,10 +303,6 @@ module.exports = {
             throw error;
           }
 
-          if (newEmail) {
-            user.email = newEmail;
-          }
-
           if (newPassword) {
             user.hashedPassword = encryption.generateHashedPassword(user.salt, newPassword);
           }
@@ -315,8 +311,8 @@ module.exports = {
             user.name = name;
           }
 
-          if (!newEmail && !newPassword && !name) {
-            const error = new Error('New feed is required');
+          if (!newPassword && !name) {
+            const error = new Error('You did not made any changes!');
             error.statusCode = 400;
             throw error;
           }
@@ -324,7 +320,7 @@ module.exports = {
           user.save()
             .then(() => {
               res.status(200).json({
-                message: 'User updated successfully!',
+                message: 'Your password was changed successfully!',
                 user: {email: user.email, name: user.name},
               })
             })
