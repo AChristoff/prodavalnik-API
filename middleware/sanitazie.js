@@ -11,7 +11,7 @@ const sanitizeEmail = (fieldName, isRequired) => {
       return User.findOne({email: value})
         .then(user => {
           if (user && user.confirmed === true) {
-            return Promise.reject('This email address is already registered!');
+            return Promise.reject('This email is already registered!');
           }
         })
     })

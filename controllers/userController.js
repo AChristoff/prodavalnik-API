@@ -53,7 +53,7 @@ module.exports = {
             res
               .status(200)
               .json({
-                message: 'The offer was successfully added to favorites!',
+                message: 'Added to favorites!',
                 offerId,
               });
           })
@@ -93,7 +93,7 @@ module.exports = {
             res
               .status(200)
               .json({
-                message: 'The offer was successfully removed from favorites!',
+                message: 'Removed from favorites!',
                 offerId,
               });
           })
