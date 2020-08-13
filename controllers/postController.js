@@ -56,6 +56,7 @@ module.exports = {
   getUserPosts: (req, res, next) => {
 
     Post.find({creator: req.userId})
+      .sort({createdAt: -1})
       .then((posts) => {
         res
           .status(200)
