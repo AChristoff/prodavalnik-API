@@ -45,6 +45,16 @@ const sanitizeName = (fieldName, isRequired) => {
 
 };
 
+const sanitizePhone = (fieldName, isRequired) => {
+  return body(fieldName)
+    .if((value, {req}) => isRequired === 'required' ? true : value !== '')
+    .trim()
+    .not()
+    .isEmpty().withMessage('Phone is required')
+    .matches(/^[0-9]{9}$/).withMessage('Phone number must be exactly 9 digits!')
+    .escape()
+};
+
 const sanitizeTitle = (fieldName) => {
   return body(fieldName)
     .trim()
@@ -88,6 +98,7 @@ module.exports = {
   sanitizeEmail,
   sanitizePassword,
   sanitizeName,
+  sanitizePhone,
   sanitizeTitle,
   sanitizeSubTitle,
   sanitizeContent,

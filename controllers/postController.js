@@ -304,7 +304,7 @@ module.exports = {
 
           if (!comments.length) {
             res
-              .status(404)
+              .status(200)
               .json({message: 'No comments found!', comments});
           }
 
@@ -317,7 +317,6 @@ module.exports = {
             error.statusCode = 500;
           }
 
-          next(error);
         });
     }
   },

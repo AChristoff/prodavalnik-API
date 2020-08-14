@@ -8,6 +8,33 @@ const {jwtSecret} = require('../config/environment');
 const {decodeToken} = require('../middleware/authenticate');
 
 module.exports = {
+
+  getUserById: (req, res, next) => {
+    let {userId} = req.params;
+
+    User.findById(userId)
+      .then((user) => {
+
+        if (!user) {
+          const error = new Error('User not found!');
+
+          error.statusCode = 404;
+          error.param = 'Invalid id!';
+          throw error;
+        }
+
+        res
+          .status(200)
+          .json({message: 'User details fetched successfully.', user});
+      })
+      .catch((error) => {
+        if (!error.statusCode) {
+          error.statusCode = 500;
+        }
+
+        next(error);
+      });
+  },
   getUserDetails: (req, res, next) => {
 
     User.findOne({_id: req.userId})
@@ -134,6 +161,7 @@ module.exports = {
               email,
               hashedPassword,
               name: 'N/A',
+              phone: 0,
               salt,
               userToken,
               confirmed: false,
@@ -162,7 +190,7 @@ module.exports = {
   },
   registerConfirm: (req, res, next) => {
     if (validator(req, res)) {
-      const {name, password} = req.body;
+      const {name, phone, password} = req.body;
       const userToken = req.params.userToken;
 
       const email = decodeToken(req, res, 'fromParam').email;
@@ -190,6 +218,7 @@ module.exports = {
 
           user.hashedPassword = hashedPassword;
           user.name = name;
+          user.phone = phone;
           user.confirmed = true;
           user.userToken = '';
 

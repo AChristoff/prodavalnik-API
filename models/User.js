@@ -17,6 +17,10 @@ const userSchema = new Schema(
       type: Schema.Types.String,
       required: true
     },
+    phone: {
+      type: Schema.Types.Number,
+      required: true
+    },
     salt: {
       type: Schema.Types.String,
       required: true
@@ -61,6 +65,7 @@ User.seedAdmin = async () => {
       email: process.env.ADMIN_EMAIL,
       hashedPassword,
       name: process.env.ADMIN_NAME,
+      phone: 0,
       salt,
       userToken: '',
       confirmed: true,
