@@ -10,8 +10,6 @@ const {
 } = require('../middleware/sanitazie');
 
 
-router.get('/:userId', userController.getUserById);
-
 router.post('/register',
   [
     sanitizeEmail('email', 'required'),
@@ -49,8 +47,9 @@ router.put('/favorites/remove', restrictedPages.isAuth(), userController.removeF
 router.put('/edit', restrictedPages.isAuth(),
   [
     body('email').isEmail().withMessage('Please enter a valid email!'),
-    sanitizePassword('newPassword', 'required'),
+    sanitizePhone('phone', 'required'),
     sanitizePassword('password', 'required'),
+    sanitizePassword('newPassword'),
   ],
   userController.edit);
 
@@ -65,5 +64,7 @@ router.put('/reset-password/:userToken', [
   userController.resetPassword);
 
 router.delete('/delete', restrictedPages.isAuth(), userController.delete);
+
+router.get('/data/:userId', userController.getUserById);
 
 module.exports = router;

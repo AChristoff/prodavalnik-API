@@ -36,7 +36,7 @@ module.exports = {
       });
   },
   getUserDetails: (req, res, next) => {
-    console.log(req);
+
     User.findById(req.userId)
       .then((userDetails) => {
 
@@ -313,7 +313,7 @@ module.exports = {
   },
   edit: (req, res, next) => {
     if (validator(req, res)) {
-      const {email, password, newPassword} = req.body;
+      const {email, phone, password, newPassword} = req.body;
 
       User.findOne({email: email})
         .then((user) => {
@@ -332,11 +332,15 @@ module.exports = {
             throw error;
           }
 
+          if (user.phone !== phone) {
+            user.phone = phone;
+          }
+
           if (newPassword) {
             user.hashedPassword = encryption.generateHashedPassword(user.salt, newPassword);
           }
 
-          if (!newPassword) {
+          if (!newPassword && !phone) {
             const error = new Error('You did not made any changes!');
             error.statusCode = 400;
             throw error;
@@ -345,7 +349,7 @@ module.exports = {
           user.save()
             .then(() => {
               res.status(200).json({
-                message: 'Your password was changed successfully!',
+                message: 'Your details were changed successfully!',
                 user: {email: user.email, name: user.name},
               })
             })
