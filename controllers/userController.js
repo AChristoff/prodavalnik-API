@@ -284,7 +284,7 @@ module.exports = {
   },
   edit: (req, res, next) => {
     if (validator(req, res)) {
-      const {email, password, newPassword, name} = req.body;
+      const {email, password, newPassword} = req.body;
 
       User.findOne({email: email})
         .then((user) => {
@@ -307,11 +307,7 @@ module.exports = {
             user.hashedPassword = encryption.generateHashedPassword(user.salt, newPassword);
           }
 
-          if (name) {
-            user.name = name;
-          }
-
-          if (!newPassword && !name) {
+          if (!newPassword) {
             const error = new Error('You did not made any changes!');
             error.statusCode = 400;
             throw error;

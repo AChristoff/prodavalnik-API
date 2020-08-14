@@ -42,7 +42,6 @@ router.put('/favorites/remove', restrictedPages.isAuth(), userController.removeF
 router.put('/edit', restrictedPages.isAuth(),
     [
         body('email').isEmail().withMessage('Please enter a valid email!'),
-        sanitizeName('name'),
         sanitizePassword('newPassword', 'required'),
         sanitizePassword('password', 'required'),
     ],
