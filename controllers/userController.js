@@ -360,8 +360,6 @@ module.exports = {
 
               next(error);
             });
-
-
         })
         .catch(error => {
           if (!error.statusCode) {
