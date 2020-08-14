@@ -3,7 +3,6 @@ const {jwtSecret} = require('../config/environment');
 
 module.exports = {
     isAuth: (role) => (req, res, next) => {
-
         const authHeaders = req.get('Authorization');
 
         if (!authHeaders) {

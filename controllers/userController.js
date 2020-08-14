@@ -36,8 +36,8 @@ module.exports = {
       });
   },
   getUserDetails: (req, res, next) => {
-
-    User.findOne({_id: req.userId})
+    console.log(req);
+    User.findById(req.userId)
       .then((userDetails) => {
 
         res
