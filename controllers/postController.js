@@ -261,6 +261,48 @@ module.exports = {
         });
     }
   },
+  setPostStatus: (req, res, next) => {
+
+    if (validator(req, res)) {
+      const post = req.body;
+      const postId = post.postId;
+      const postStatus = post.approval ? 'approved' : 'disapproved';
+
+      if (!postId) {
+        const error = new Error('Post ID is required!');
+        error.statusCode = 404;
+        throw error;
+      }
+
+      Post.findById(postId)
+        .then((p) => {
+          if (!p) {
+            const error = new Error('Post not found');
+            error.statusCode = 404;
+            throw error;
+          }
+
+          p.approval = post.approval;
+
+          return p.save();
+        })
+        .then((p) => {
+          if (p) {
+            res.status(200).json({
+              message: `Offer ${postStatus}!`,
+              post: p
+            })
+          }
+        })
+        .catch((error) => {
+          if (!error.statusCode) {
+            error.statusCode = 500;
+          }
+
+          next(error);
+        });
+    }
+  },
   createComment: async (req, res, next) => {
 
     if (validator(req, res)) {

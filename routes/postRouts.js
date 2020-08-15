@@ -42,4 +42,6 @@ router.get('/favorites/:page?/:limit?/:sortBy?/:order?/:search?/:filters?', rest
 
 router.delete('/post/delete/:postId', restrictedPages.isAuth(), postController.deletePost);
 
+router.put('/post/status', restrictedPages.isAuth('Admin'), postController.setPostStatus);
+
 module.exports = router;
