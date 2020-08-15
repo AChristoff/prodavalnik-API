@@ -44,4 +44,6 @@ router.delete('/post/delete/:postId', restrictedPages.isAuth(), postController.d
 
 router.put('/post/status', restrictedPages.isAuth('Admin'), postController.setPostStatus);
 
+router.get('/posts/approval/:page?/:limit?/:sortBy?/:order?/:search?/:filters?', restrictedPages.isAuth('Admin'), postController.getPostsForApproval);
+
 module.exports = router;

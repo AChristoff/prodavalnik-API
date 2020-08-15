@@ -18,10 +18,13 @@ module.exports = {
     //search
     let searchCriteria = req.params.search.replace('search=', '');
     searchCriteria = searchCriteria ? {$text: {$search: searchCriteria}} : '';
+    //status
+    const approval = true;
 
     Post.find({
       ...searchCriteria,
       ...filterCriteria,
+      approval,
     })
       .then((posts) => {
         postsCount = posts.length || 0;
@@ -36,6 +39,63 @@ module.exports = {
     Post.find({
       ...searchCriteria,
       ...filterCriteria,
+      approval,
+    }).sort(sortCriteria)
+      .skip((limit * page) - limit)
+      .limit(limit)
+      .then((posts) => {
+        res.status(200).json({
+          message: 'Fetched posts successfully.',
+          count: postsCount,
+          posts,
+        });
+      })
+      .catch((error) => {
+        if (!error.statusCode) {
+          error.statusCode = 500;
+        }
+        next(error);
+      });
+  },
+  getPostsForApproval: (req, res, next) => {
+
+    //pagination
+    const page = Number(req.params.page) || 1;
+    const limit = Number(req.params.limit) || 6;
+    let postsCount = 0;
+    //sort
+    const sortBy = req.params.sortBy || 'createdAt';
+    const order = req.params.order || '1';
+    const sortCriteria = {[sortBy]: order};
+    //filter
+    const filterCriteria = req.params.filters
+      ? {category: req.params.filters}
+      : {};
+    //state
+    const approvalCriteria = req.query || '';
+    //search
+    let searchCriteria = req.params.search.replace('search=', '');
+    searchCriteria = searchCriteria ? {$text: {$search: searchCriteria}} : '';
+
+    Post.find({
+      ...searchCriteria,
+      ...filterCriteria,
+      ...approvalCriteria,
+    })
+      .then((posts) => {
+        postsCount = posts.length || 0;
+      })
+      .catch((error) => {
+        if (!error.statusCode) {
+          error.statusCode = 500;
+        }
+        next(error);
+      });
+
+    Post.find({
+      ...searchCriteria,
+      ...filterCriteria,
+      ...approvalCriteria,
     }).sort(sortCriteria)
       .skip((limit * page) - limit)
       .limit(limit)
