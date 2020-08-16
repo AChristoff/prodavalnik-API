@@ -29,7 +29,7 @@ module.exports = {
         } else {
           const error = new Error('Category exists!');
 
-          error.statusCode = 405;
+          error.statusCode = 403;
           error.param = "Can't duplicate categories!";
           throw error;
         }
