@@ -16,11 +16,9 @@ module.exports = {
     const sortCriteria = {[sortBy]: order};
     //filter
     const filterCriteria = req.query || '';
-    console.log(filterCriteria);
     //search
     let searchCriteria = req.params.search.replace('search=', '');
     searchCriteria = searchCriteria ? {$text: {$search: searchCriteria}} : '';
-    console.log(searchCriteria);
     //status
     const approval = true;
 
@@ -101,6 +99,16 @@ module.exports = {
     let searchCriteria = req.params.search.replace('search=', '');
     searchCriteria = searchCriteria ? {$text: {$search: searchCriteria}} : '';
 
+    let categories = [];
+
+    Category.find({})
+      .then((c) => {
+        categories = c;
+      })
+      .catch((e) => {
+        console.log('error', e);
+      });
+
     Post.find({
       ...searchCriteria,
       ...filterCriteria,
@@ -123,7 +131,18 @@ module.exports = {
     }).sort(sortCriteria)
       .skip((limit * page) - limit)
       .limit(limit)
-      .then((posts) => {
+      .then((result) => {
+
+        let posts = [...result];
+
+        for (let p of posts) {
+          for (let c of categories) {
+            if (c._id.toString() === p.category) {
+              p.category =  c.category;
+            }
+          }
+        }
+
         res.status(200).json({
           message: 'Fetched posts successfully.',
           count: postsCount,

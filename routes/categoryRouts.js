@@ -4,10 +4,19 @@ const restrictedPages = require('../middleware/authenticate');
 const {sanitizeCategory} = require('../middleware/sanitazie');
 
 
-router.post('/create',
+router.post(
+  '/create',
   restrictedPages.isAuth('Admin'),
   [sanitizeCategory('newCategory')],
-  categoryController.createCategory);
+  categoryController.createCategory
+);
+
+router.put(
+  '/edit',
+  restrictedPages.isAuth('Admin'),
+  [sanitizeCategory('newCategoryName')],
+  categoryController.editCategory
+);
 
 router.get('/all', categoryController.getCategories);
 
