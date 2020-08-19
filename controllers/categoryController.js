@@ -48,9 +48,41 @@ module.exports = {
     if (validator(req, res)) {
       const {categoryToEdit, newCategoryName} = req.body;
 
+      Category.findOne({ _id: categoryToEdit })
+        .then((cat) => {
+          cat.category = newCategoryName;
+          cat
+            .save()
+            .then((c) => {
+              res.status(201).json({
+                message: 'Category edited successfully!',
+                category: c,
+              });
+            })
+            .catch((error) => {
+              if (!error.statusCode) {
+                error.statusCode = 500;
+              }
+
+              next(error);
+            });
+        })
+        .catch((error) => {
+          if (!error.statusCode) {
+            error.statusCode = 500;
+          }
+
+          next(error);
+        });
+    }
+  },
+
+  deleteCategory: (req, res, next) => {
+    if (validator(req, res)) {
+      const {category} = req.body;
       let isUsed = false;
 
-      Post.find({category: categoryToEdit})
+      Post.find({category: category})
       .then((posts) => {
         if(posts.length) {
           isUsed = true;
@@ -60,34 +92,28 @@ module.exports = {
         console.log('error', e);
       });
 
-      Category.findOne({_id: categoryToEdit})
+      Category.findOne({_id: category})
         .then((cat) => {
         if (!isUsed) {
-          cat.category = newCategoryName;
-          cat.save()
-            .then((c) => {
-              res
-                .status(201)
-                .json({
-                  message: 'Category edited successfully!',
-                  category: c,
-                })
-            })
-            .catch((error) => {
-              if (!error.statusCode) {
-                error.statusCode = 500;
-              }
-
-              next(error);
-            });
+      
+          return Category.findByIdAndDelete(category);
+         
         } else {
           const error = new Error('Category is in use!');
 
           error.statusCode = 403;
-          error.param = "This category is in use and can't be edited!";
+          error.param = "This category is in use and can't be deleted!";
           throw error;
         }
-      }).catch((error) => {
+      })
+      .then((c) => {
+        res
+          .status(200)
+          .json({
+            message: 'Category was deleted successfully!',
+          })
+      })
+      .catch((error) => {
         if (!error.statusCode) {
           error.statusCode = 500;
         }
