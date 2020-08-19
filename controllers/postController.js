@@ -2,6 +2,7 @@ const {validationResult} = require('express-validator');
 const Post = require('../models/Post');
 const User = require('../models/User');
 const Comment = require('../models/Comment');
+const Category = require('../models/Category');
 
 module.exports = {
   getPosts: (req, res, next) => {
@@ -15,11 +16,23 @@ module.exports = {
     const sortCriteria = {[sortBy]: order};
     //filter
     const filterCriteria = req.query || '';
+    console.log(filterCriteria);
     //search
     let searchCriteria = req.params.search.replace('search=', '');
     searchCriteria = searchCriteria ? {$text: {$search: searchCriteria}} : '';
+    console.log(searchCriteria);
     //status
     const approval = true;
+
+    let categories = [];
+
+    Category.find({})
+      .then((c) => {
+        categories = c;
+      })
+      .catch((e) => {
+        console.log('error', e);
+      });
 
     Post.find({
       ...searchCriteria,
@@ -43,7 +56,18 @@ module.exports = {
     }).sort(sortCriteria)
       .skip((limit * page) - limit)
       .limit(limit)
-      .then((posts) => {
+      .then((result) => {
+
+        let posts = [...result];
+
+        for (let p of posts) {
+          for (let c of categories) {
+            if (c._id.toString() === p.category) {
+              p.category =  c.category;
+            }
+          }
+        }
+
         res.status(200).json({
           message: 'Fetched posts successfully.',
           count: postsCount,
@@ -115,9 +139,30 @@ module.exports = {
   },
   getUserPosts: (req, res, next) => {
 
+    let categories = [];
+
+    Category.find({})
+      .then((c) => {
+        categories = c;
+      })
+      .catch((e) => {
+        console.log('error', e);
+      });
+
     Post.find({creator: req.userId})
       .sort({createdAt: -1})
-      .then((posts) => {
+      .then((result) => {
+
+        let posts = [...result];
+
+        for (let p of posts) {
+          for (let c of categories) {
+            if (c._id.toString() === p.category) {
+              p.category =  c.category;
+            }
+          }
+        }
+
         res
           .status(200)
           .json({message: 'User posts fetched successfully.', posts});
@@ -144,6 +189,16 @@ module.exports = {
     let searchCriteria = req.params.search.replace('search=', '');
     searchCriteria = searchCriteria ? {$text: {$search: searchCriteria}} : '';
 
+    let categories = [];
+
+    Category.find({})
+      .then((c) => {
+        categories = c;
+      })
+      .catch((e) => {
+        console.log('error', e);
+      });
+
     User.findOne({_id: req.userId})
       .then((user) => {
         Post.find({
@@ -153,7 +208,18 @@ module.exports = {
         }).sort(sortCriteria)
           .skip((limit * page) - limit)
           .limit(limit)
-          .then((posts) => {
+          .then((result) => {
+
+            let posts = [...result];
+
+            for (let p of posts) {
+              for (let c of categories) {
+                if (c._id.toString() === p.category) {
+                  p.category =  c.category;
+                }
+              }
+            }
+
             res
               .status(200)
               .json({
@@ -253,12 +319,29 @@ module.exports = {
   },
   getPostById: (req, res, next) => {
     const postId = req.params.postId;
+    let categoryName = '';
+    let categories = [];
+
+    Category.find({})
+      .then((c) => {
+        categories = c;
+      })
+      .catch((e) => {
+        console.log('error', e);
+      });
 
     Post.findById(postId)
       .then((post) => {
+
+        categories.map(c => {
+          if (c._id.toString() === post.category) {
+            categoryName = c.category;
+          }
+        });
+
         res
           .status(200)
-          .json({message: 'Post fetched.', post})
+          .json({message: 'Post fetched.', post, categoryName})
       })
       .catch((error) => {
         if (!error.statusCode) {
