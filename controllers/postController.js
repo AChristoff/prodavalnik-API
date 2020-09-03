@@ -61,7 +61,6 @@ module.exports = {
       });
   },
   getPostsForApproval: (req, res, next) => {
-
     //pagination
     const page = Number(req.params.page) || 1;
     const limit = Number(req.params.limit) || 6;
