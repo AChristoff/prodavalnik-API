@@ -22,16 +22,6 @@ module.exports = {
     //status
     const approval = true;
 
-    let categories = [];
-
-    Category.find({})
-      .then((c) => {
-        categories = c;
-      })
-      .catch((e) => {
-        console.log('error', e);
-      });
-
     Post.find({
       ...searchCriteria,
       ...filterCriteria,
@@ -54,17 +44,8 @@ module.exports = {
     }).sort(sortCriteria)
       .skip((limit * page) - limit)
       .limit(limit)
-      .then((result) => {
-
-        let posts = [...result];
-
-        for (let p of posts) {
-          for (let c of categories) {
-            if (c._id.toString() === p.category) {
-              p.category =  c.category;
-            }
-          }
-        }
+      .populate('category', 'name')
+      .then((posts) => {
 
         res.status(200).json({
           message: 'Fetched posts successfully.',
@@ -99,16 +80,6 @@ module.exports = {
     let searchCriteria = req.params.search.replace('search=', '');
     searchCriteria = searchCriteria ? {$text: {$search: searchCriteria}} : '';
 
-    let categories = [];
-
-    Category.find({})
-      .then((c) => {
-        categories = c;
-      })
-      .catch((e) => {
-        console.log('error', e);
-      });
-
     Post.find({
       ...searchCriteria,
       ...filterCriteria,
@@ -131,17 +102,8 @@ module.exports = {
     }).sort(sortCriteria)
       .skip((limit * page) - limit)
       .limit(limit)
-      .then((result) => {
-
-        let posts = [...result];
-
-        for (let p of posts) {
-          for (let c of categories) {
-            if (c._id.toString() === p.category) {
-              p.category =  c.category;
-            }
-          }
-        }
+      .populate('category', 'name')
+      .then((posts) => {
 
         res.status(200).json({
           message: 'Fetched posts successfully.',
@@ -158,29 +120,10 @@ module.exports = {
   },
   getUserPosts: (req, res, next) => {
 
-    let categories = [];
-
-    Category.find({})
-      .then((c) => {
-        categories = c;
-      })
-      .catch((e) => {
-        console.log('error', e);
-      });
-
     Post.find({creator: req.userId})
       .sort({createdAt: -1})
-      .then((result) => {
-
-        let posts = [...result];
-
-        for (let p of posts) {
-          for (let c of categories) {
-            if (c._id.toString() === p.category) {
-              p.category =  c.category;
-            }
-          }
-        }
+      .populate('category', 'name')
+      .then((posts) => {
 
         res
           .status(200)
@@ -208,16 +151,6 @@ module.exports = {
     let searchCriteria = req.params.search.replace('search=', '');
     searchCriteria = searchCriteria ? {$text: {$search: searchCriteria}} : '';
 
-    let categories = [];
-
-    Category.find({})
-      .then((c) => {
-        categories = c;
-      })
-      .catch((e) => {
-        console.log('error', e);
-      });
-
     User.findOne({_id: req.userId})
       .then((user) => {
         Post.find({
@@ -227,17 +160,8 @@ module.exports = {
         }).sort(sortCriteria)
           .skip((limit * page) - limit)
           .limit(limit)
-          .then((result) => {
-
-            let posts = [...result];
-
-            for (let p of posts) {
-              for (let c of categories) {
-                if (c._id.toString() === p.category) {
-                  p.category =  c.category;
-                }
-              }
-            }
+          .populate('category', 'name')
+          .then((posts) => {
 
             res
               .status(200)
@@ -338,29 +262,14 @@ module.exports = {
   },
   getPostById: (req, res, next) => {
     const postId = req.params.postId;
-    let categoryName = '';
-    let categories = [];
-
-    Category.find({})
-      .then((c) => {
-        categories = c;
-      })
-      .catch((e) => {
-        console.log('error', e);
-      });
-
+  
     Post.findById(postId)
+      .populate('category', 'name')
       .then((post) => {
-
-        categories.map(c => {
-          if (c._id.toString() === post.category) {
-            categoryName = c.category;
-          }
-        });
 
         res
           .status(200)
-          .json({message: 'Post fetched.', post, categoryName})
+          .json({message: 'Post fetched.', post})
       })
       .catch((error) => {
         if (!error.statusCode) {

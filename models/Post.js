@@ -12,8 +12,8 @@ const postSchema = new Schema(
       required: false,
     },
     category: {
-      type: Schema.Types.String,
-      // ref: 'Category',
+      type: Schema.Types.ObjectId,
+      ref: 'Category',
       required: true,
     },
     content: {
