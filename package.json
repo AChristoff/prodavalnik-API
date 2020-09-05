@@ -21,6 +21,7 @@
     "express-validator": "6.4.0",
     "jsonwebtoken": "8.4.0",
     "mongoose": "^5.7.5",
-    "nodemailer": "^6.4.8"
+    "nodemailer": "^6.4.8",
+    "swagger-ui-express": "^4.1.4"
   }
 }

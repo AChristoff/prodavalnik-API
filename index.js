@@ -9,6 +9,9 @@ const routeInterceptor = require('./middleware/interceptor');
 const generalErrors = require('./util/generalErrors');
 const app = express();
 
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
+
 initializeDataBase(connectionString);
 CORS(app);
 
@@ -16,6 +19,8 @@ app.use(bodyParser.json());
 
 routeInterceptor(app);
 generalErrors(app);
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.listen(port, () => {
     console.log(`REST API listening on port: ${port}`)
