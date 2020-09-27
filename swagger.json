@@ -1,12 +1,355 @@
 {
-  "openapi": "3.0.0",
-  "info": {
-    "version": "1.0.0",
-    "title": "Prodavalnik API",
-    "description": "An application that stores user offers of new or used products.",
-    "license": {
-        "name": "MIT",
-        "url": "https://opensource.org/licenses/MIT"
+    "openapi": "3.0.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "Prodavalnik-API",
+        "description": "Some",
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        }
+    },
+    "servers": [
+        {
+            "url": "http://localhost:5000",
+            "description": "Local"
+        },
+        {
+            "url": "https://aleksov.herokuapp.com",
+            "description": "Heroku"
+        }
+    ],
+    "tags": [
+        {
+            "name": "Posts (Offers)",
+            "description": "end-points"
+        }
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/blog/post/create": {
+            "post": {
+                "tags": [
+                    "Posts (Offers)"
+                ],
+                "summary": "CREATE a post (Offer)",
+                "requestBody": {
+                    "description": "Post object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "required": true,
+                                        "example": "Old gramophone"
+                                    },
+                                    "category": {
+                                        "type": "string",
+                                        "required": true,
+                                        "example": "Antiques"
+                                    },
+                                    "content": {
+                                        "type": "string",
+                                        "required": true,
+                                        "example": "Vinyl Record Player,phonograph/gramophone record player power. Old fashioned Turntable antique copper big horn gramophone Retro Bluetooth Stereo. REMIUM SOUND QUALITY with minimum vibrations. It is perfect for your living room, bedroom or office and a great choice for vinyl lovers."
+                                    },
+                                    "price": {
+                                        "type": "number",
+                                        "required": true,
+                                        "example": 725
+                                    },
+                                    "image": {
+                                        "type": "string",
+                                        "required": true
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Post created successfully!",
+                        "schema": {
+                            "$ref": "#/definitions/Post"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error."
+                    }
+                }
+            }
+        },
+        "/blog/post/{id}": {
+            "get": {
+                "tags": [
+                    "Posts (Offers)"
+                ],
+                "summary": "GET a new post (Offer)",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "ID of the post (Offer)",
+                        "type": "string"
+                    }
+                ],
+                "requestBody": {
+                    "description": "None",
+                    "required": false
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Post fetched."
+                                        },
+                                        "post": {
+                                            "$ref": "#/definitions/Post"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error."
+                    }
+                }
+            }
+        },
+        "/blog/posts/all/{page}/{limit}/{sortBy}/{order}/{search}/?category={filter}": {
+            "get": {
+                "tags": [
+                    "Posts (Offers)"
+                ],
+                "summary": "GET a all posts (Offers)",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "page",
+                        "required": true,
+                        "description": "Page number",
+                        "example": "1",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "path",
+                        "name": "limit",
+                        "required": true,
+                        "description": "Number of posts (Offers) per page",
+                        "example": "6",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "path",
+                        "name": "sortBy",
+                        "required": true,
+                        "description": "Sort post (Offer) by this criteria",
+                        "example": "createdAt",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "path",
+                        "name": "order",
+                        "required": true,
+                        "description": "Set criteria to be asc/desc",
+                        "example": "-1",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "path",
+                        "name": "search",
+                        "required": false,
+                        "description": "String used for full text search in post (Offer)",
+                        "example": "Gramophone",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "path",
+                        "name": "filter",
+                        "required": false,
+                        "description": "Filter post (Offer) by category",
+                        "example": "Antiques",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "None",
+                    "required": false
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "count": {
+                                            "type": "number"
+                                        },
+                                        "posts": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/Post"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error."
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "CreatePost": {
+            "type": "object",
+            "properties": {
+                "title": {
+                    "type": "string",
+                    "required": true
+                },
+                "subtitle": {
+                    "type": "string",
+                    "required": false
+                },
+                "category": {
+                    "type": "object",
+                    "$ref": "#/definitions/Category",
+                    "required": true
+                },
+                "content": {
+                    "type": "string",
+                    "required": true
+                },
+                "price": {
+                    "type": "number",
+                    "required": true
+                },
+                "image": {
+                    "type": "string",
+                    "required": true
+                }
+            }
+        },
+        "Post": {
+            "type": "object",
+            "properties": {
+                "watched": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "format": "uuid",
+                        "example": "5adc210a94a8fe304478a3c5"
+                    }
+                },
+                "approval": {
+                    "type": "boolean"
+                },
+                "_id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "5f273aaeac8e6d2f9c184e46"
+                },
+                "title": {
+                    "type": "string",
+                    "example": "Old gramophone"
+                },
+                "subtitle": {
+                    "type": "string",
+                    "example": ""
+                },
+                "category": {
+                    "type": "object",
+                    "$ref": "#/definitions/Category",
+                    "example": "Antiques"
+                },
+                "content": {
+                    "type": "string",
+                    "example": "Vinyl Record Player,phonograph/gramophone record player power. Old fashioned Turntable antique copper big horn gramophone Retro Bluetooth Stereo. REMIUM SOUND QUALITY with minimum vibrations. It is perfect for your living room, bedroom or office and a great choice for vinyl lovers."
+                },
+                "price": {
+                    "type": "number",
+                    "example": 725
+                },
+                "image": {
+                    "type": "string"
+                },
+                "creator": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "5f3391e77bdea1c354fdbc32"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                },
+                "__v": {
+                    "type": "number",
+                    "example": 12
+                }
+            }
+        },
+        "Category": {
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "5f3711e46bdea1c354fdbc55"
+                },
+                "name": {
+                    "type": "string",
+                    "required": true
+                }
+            }
+        }
     }
-  }
 }
