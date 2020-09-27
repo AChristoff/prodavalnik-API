@@ -34,11 +34,7 @@ router.post('/login',
   userController.login);
 
 
-router.get('/profile', restrictedPages.isAuth(),
-  [
-    sanitizeEmail('email', 'required'),
-  ],
-  userController.getUserDetails);
+router.get('/profile', restrictedPages.isAuth(), userController.getUserDetails);
 
 router.put('/favorites/add', restrictedPages.isAuth(), userController.addFavoriteOffer);
 

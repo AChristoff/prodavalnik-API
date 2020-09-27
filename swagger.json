@@ -987,6 +987,49 @@
                     }
                 }
             }
+        },
+        "/user/profile": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get user data | USER or ADMIN",
+                "produces": [
+                    "application/json"
+                ],
+                "security": [
+                    {
+                        "baseUserSecurity": [
+                            "User",
+                            "Admin"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User details fetched successfully."
+                                        },
+                                        "userDetails": {
+                                            "$ref": "#/definitions/User"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error."
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -1187,6 +1230,83 @@
                 "__v": {
                     "type": "number",
                     "example": 2
+                }
+            }
+        },
+        "User": {
+            "properties": {
+                "posts": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "format": "uuid",
+                        "example": "5f35a6e626cf611a6010b82c"
+                    }
+                },
+                "comments": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "format": "uuid",
+                        "example": "5f35b4aef282d311542e49a5"
+                    }
+                },
+                "favorites": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "format": "uuid",
+                        "example": "5f273aaeac8e6d2f8c184e46"
+                    }
+                },
+                "_id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "5f359bcc26cf611a6010b82b"
+                },
+                "role": {
+                    "type": "string",
+                    "example": "User"
+                },
+                "email": {
+                    "type": "string",
+                    "example": "jonh-doe@gmail.com"
+                },
+                "phone": {
+                    "type": "number",
+                    "example": 888123321
+                },
+                "hashedPassword": {
+                    "type": "string",
+                    "example": "********"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "John"
+                },
+                "salt": {
+                    "type": "string",
+                    "example": "********"
+                },
+                "userToken": {
+                    "type": "string",
+                    "example": ""
+                },
+                "confirmed": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "createdAt": {
+                    "type": "string",
+                    "example": "2020-07-31T20:55:17.800Z"
+                },
+                "updatedAt": {
+                    "type": "string",
+                    "example": "2020-09-05T08:53:13.657Z"
+                },
+                "__v": {
+                    "type": "number",
+                    "example": 40
                 }
             }
         }

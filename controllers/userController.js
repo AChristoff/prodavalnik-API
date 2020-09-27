@@ -39,6 +39,9 @@ module.exports = {
 
     User.findById(req.userId)
       .then((userDetails) => {
+        
+        userDetails.hashedPassword = '********';
+        userDetails.salt = '********';
 
         res
           .status(200)
