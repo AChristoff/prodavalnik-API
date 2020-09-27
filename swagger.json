@@ -3,7 +3,6 @@
     "info": {
         "version": "1.0.0",
         "title": "Prodavalnik-API",
-        "description": "Some",
         "license": {
             "name": "MIT",
             "url": "https://opensource.org/licenses/MIT"
@@ -667,6 +666,324 @@
                                 }
                             }
                         }
+                    }
+                }
+            }
+        },
+        "/user/register": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "User registration - step 1",
+                "requestBody": {
+                    "description": "User object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "required": true,
+                                        "example": "jonh-doe@gmail.com"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Verification email was sent!"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error."
+                    }
+                }
+            }
+        },
+        "/user/register/confirm/{jwt}": {
+            "put": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "User registration - step 2",
+                "requestBody": {
+                    "description": "User object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "required": true,
+                                        "example": "John"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "required": true,
+                                        "minLength": 6,
+                                        "example": "jonh-Doe_820"
+                                    },
+                                    "phone": {
+                                        "type": "number",
+                                        "required": true,
+                                        "minLength": 9,
+                                        "maxLength": 9,
+                                        "example": 888155433
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User created successfully!"
+                                        },
+                                        "username": {
+                                            "type": "string",
+                                            "example": "John"
+                                        },
+                                        "token": {
+                                            "type": "string",
+                                            "format": "jwt",
+                                            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiVXNlciIsIm5hbWUiOiJUb20iLCJlbWFpbCI6ImFsZXhhbmRlci5jaHJpc3RvZmZAYWJ2LmJnIiwidXNlcklkIjoiNWY3MGY1YzUyYjhlNDAyYjk4NDU4OTlhIiwiaWF0IjoxNjAxMjQwMzUwLCJleHAiOjE2MDEyNDM5NTB9.8H0wrwCCGS-9SVZYVbz1YXrvavEqPUZqTj3MBs_JBJ4"
+                                        },
+                                        "userId": {
+                                            "type": "string",
+                                            "format": "uuid",
+                                            "example": "5f70f5c52b8e402b9845899a"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error."
+                    }
+                }
+            }
+        },
+        "/user/login": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "User login",
+                "requestBody": {
+                    "description": "User object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "required": true,
+                                        "example": "jonh-doe@gmail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "required": true,
+                                        "minLength": 6,
+                                        "example": "jonh-Doe_820"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User successfully logged in!"
+                                        },
+                                        "username": {
+                                            "type": "string",
+                                            "example": "John"
+                                        },
+                                        "role": {
+                                            "type": "string",
+                                            "example": "User"
+                                        },
+                                        "token": {
+                                            "type": "string",
+                                            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiVXNlciIsIm5hbWUiOiJUb20iLCJlbWFpbCI6ImFsZXhhbmRlci5jaHJpc3RvZmZAYWJ2LmJnIiwidXNlcklkIjoiNWY3MGY1YzUyYjhlNDAyYjk4NDU4OTlhIiwiaWF0IjoxNjAxMjQwMzUwLCJleHAiOjE2MDEyNDM5NTB9.8H0wrwCCGS-9SVZYVbz1YXrvavEqPUZqTj3MBs_JBJ4"
+                                        },
+                                        "userId": {
+                                            "type": "string",
+                                            "format": "uuid",
+                                            "example": "5f70f5c52b8e402b9845899a"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error."
+                    }
+                }
+            }
+        },
+        "/user/forgot-password": {
+            "put": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Forgot password",
+                "requestBody": {
+                    "description": "User object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "required": true,
+                                        "example": "jonh-doe@gmail.com"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Verification email was sent!"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error."
+                    }
+                }
+            }
+        },
+        "/user/reset-password/{jwt}": {
+            "put": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Forgot password",
+                "requestBody": {
+                    "description": "User object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "newPassword": {
+                                        "type": "string",
+                                        "required": true,
+                                        "example": "John#909"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User password has been reset successfully!"
+                                        },
+                                        "username": {
+                                            "type": "string",
+                                            "example": "John"
+                                        },
+                                        "role": {
+                                            "type": "string",
+                                            "example": "User"
+                                        },
+                                        "token": {
+                                            "type": "string",
+                                            "format": "jwt",
+                                            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiVXNlciIsIm5hbWUiOiJBbGV4IiwiZW1haWwiOiJkc2Fkc2FAbWFpbC5iZyIsInVzZXJJZCI6IjVmMzU5YmNjMjZjZjYxMWE2MDEwYjgyYiIsImlhdCI6MTYwMTI0NDQ1NSwiZXhwIjoxNjAxMzMwODU1fQ.s6DXJ_HVmTkelrsrrB_hfs8DbZTkqaJrwp2OZ7W2NCA"
+                                        },
+                                        "userId": {
+                                            "type": "string",
+                                            "format": "uuid",
+                                            "example": "5f70f5c52b8e402b9845899a"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error."
                     }
                 }
             }
