@@ -191,6 +191,12 @@ module.exports = {
       const post = new Post({title, subtitle, content, category, price, image, creator: req.userId});
       let creator;
 
+      if(Number(price) < 1) {
+        const error = new Error('Price can not be less than 1!');
+          error.statusCode = 400;
+          throw error;
+      }
+
       post.save()
         .then(() => {
           return User.findById(req.userId);

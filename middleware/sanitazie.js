@@ -60,6 +60,7 @@ const sanitizeTitle = (fieldName) => {
     .trim()
     .not()
     .isEmpty().withMessage('Title is required')
+    .isLength({ min: 6 }).withMessage('Title must be at least 6 characters long!')
     .escape()
 };
 
@@ -74,6 +75,7 @@ const sanitizeContent = (fieldName) => {
     .trim()
     .not()
     .isEmpty().withMessage('Content is required')
+    .isLength({ min: 20 }).withMessage('Title must be at least 20 characters long!')
     .escape()
 };
 
