@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const postController = require('../controllers/postController');
 const restrictedPages = require('../middleware/authenticate');
-const {sanitizeTitle, sanitizeSubTitle, sanitizeContent, sanitizeCategory, sanitizePrice} = require('../middleware/sanitazie');
+const {sanitizeTitle, sanitizeSubTitle, sanitizeContent, sanitizeComment, sanitizeCategory, sanitizePrice} = require('../middleware/sanitazie');
 
 
 router.post('/post/create', restrictedPages.isAuth(),
@@ -28,7 +28,7 @@ router.get('/post/:postId', postController.getPostById);
 
 router.post('/post/:postId', restrictedPages.isAuth(),
   [
-    sanitizeContent('content'),
+    sanitizeComment('content'),
   ],
   postController.createComment);
 

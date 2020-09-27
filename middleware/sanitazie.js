@@ -79,6 +79,15 @@ const sanitizeContent = (fieldName) => {
     .escape()
 };
 
+const sanitizeComment = (fieldName) => {
+  return body(fieldName)
+    .trim()
+    .not()
+    .isEmpty().withMessage('Content is required')
+    .isLength({ min: 2 }).withMessage('Title must be at least 2 characters long!')
+    .escape()
+};
+
 const sanitizeCategory = (fieldName) => {
   return body(fieldName)
     .trim()
@@ -104,6 +113,7 @@ module.exports = {
   sanitizeTitle,
   sanitizeSubTitle,
   sanitizeContent,
+  sanitizeComment,
   sanitizeCategory,
   sanitizePrice,
 };

@@ -342,7 +342,7 @@ module.exports = {
     if (validator(req, res)) {
       const post = req.body;
       const postId = post.postId;
-      const postStatus = post.approval ? 'approved' : 'disapproved';
+      const postStatus = post.approval === "true" ? 'approved' : 'disapproved';
 
       if (!postId) {
         const error = new Error('Post ID is required!');

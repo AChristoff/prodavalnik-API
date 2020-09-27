@@ -11,12 +11,10 @@
     },
     "servers": [
         {
-            "url": "http://localhost:5000",
-            "description": "Local"
+            "url": "https://aleksov.herokuapp.com"
         },
         {
-            "url": "https://aleksov.herokuapp.com",
-            "description": "Heroku"
+            "url": "http://localhost:5000"
         }
     ],
     "tags": [
@@ -32,259 +30,6 @@
         "application/json"
     ],
     "paths": {
-        "/blog/post/create": {
-            "post": {
-                "tags": [
-                    "Posts (Offers)"
-                ],
-                "summary": "CREATE a post (Offer)",
-                "requestBody": {
-                    "description": "Post object",
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "title": {
-                                        "type": "string",
-                                        "required": true,
-                                        "example": "Old gramophone"
-                                    },
-                                    "category": {
-                                        "type": "string",
-                                        "required": true,
-                                        "format": "uuid",
-                                        "example": "5f39932f7bdea1c354fdbc37"
-                                    },
-                                    "content": {
-                                        "type": "string",
-                                        "required": true,
-                                        "example": "Vinyl Record Player,phonograph/gramophone record player power. Old fashioned Turntable antique copper big horn gramophone Retro Bluetooth Stereo. REMIUM SOUND QUALITY with minimum vibrations. It is perfect for your living room, bedroom or office and a great choice for vinyl lovers."
-                                    },
-                                    "price": {
-                                        "type": "number",
-                                        "required": true,
-                                        "example": 725
-                                    },
-                                    "image": {
-                                        "type": "string",
-                                        "required": true
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "produces": [
-                    "application/json"
-                ],
-                "responses": {
-                    "201": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Post created successfully!"
-                                        },
-                                        "post": {
-                                            "$ref": "#/definitions/Post"
-                                        },
-                                        "creator": {
-                                            "type": "object",
-                                            "properties": {
-                                                "userId": {
-                                                    "type": "string",
-                                                    "format": "uuid",
-                                                    "example": "5f3391e77bdea1c354fdbc32"
-                                                },
-                                                "name": {
-                                                    "type": "string",
-                                                    "example": "John"
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error."
-                    }
-                }
-            }
-        },
-        "/blog/post/{id}": {
-            "get": {
-                "tags": [
-                    "Posts (Offers)"
-                ],
-                "summary": "GET a post (Offer) by ID",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "description": "UUID of the post (Offer)",
-                        "example": "5f273aaeac8e6d2f9c184e46",
-                        "type": "string"
-                    }
-                ],
-                "requestBody": {
-                    "description": "None",
-                    "required": false
-                },
-                "produces": [
-                    "application/json"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Post fetched."
-                                        },
-                                        "post": {
-                                            "$ref": "#/definitions/Post"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error."
-                    }
-                }
-            }
-        },
-        "/blog/post/edit/{id}": {
-            "put": {
-                "tags": [
-                    "Posts (Offers)"
-                ],
-                "summary": "EDIT a post (Offer)",
-                "requestBody": {
-                    "description": "Post object",
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "title": {
-                                        "type": "string",
-                                        "required": true,
-                                        "minLength": 6,
-                                        "example": "Old gramophone"
-                                    },
-                                    "category": {
-                                        "type": "string",
-                                        "required": true,
-                                        "example": "Antiques"
-                                    },
-                                    "content": {
-                                        "type": "string",
-                                        "required": true,
-                                        "minLength": 20,
-                                        "example": "Vinyl Record Player,phonograph/gramophone record player power. Old fashioned Turntable antique copper big horn gramophone Retro Bluetooth Stereo. REMIUM SOUND QUALITY with minimum vibrations. It is perfect for your living room, bedroom or office and a great choice for vinyl lovers."
-                                    },
-                                    "price": {
-                                        "type": "number",
-                                        "required": true,
-                                        "minimum": 1,
-                                        "example": 725
-                                    },
-                                    "image": {
-                                        "type": "string",
-                                        "required": true
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "produces": [
-                    "application/json"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Post updated!"
-                                        },
-                                        "post": {
-                                            "$ref": "#/definitions/Post"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error."
-                    }
-                }
-            }
-        },
-        "/blog/post/delete/{id}": {
-            "delete": {
-                "tags": [
-                    "Posts (Offers)"
-                ],
-                "summary": "DELETE a post (Offer)",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "description": "UUID of the post (Offer)",
-                        "example": "5f273aaeac8e6d2f9c184e46",
-                        "type": "string"
-                    }
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Post deleted successfully!"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error."
-                    }
-                }
-            }
-        },
         "/blog/posts/all/{page}/{limit}/{sortBy}/{order}/{search}/?category={filter}": {
             "get": {
                 "tags": [
@@ -337,7 +82,7 @@
                         "name": "search",
                         "required": false,
                         "description": "String used for full text search in post (Offer)",
-                        "example": "Gramophone",
+                        "example": "BMW",
                         "schema": {
                             "type": "string"
                         }
@@ -346,8 +91,8 @@
                         "in": "path",
                         "name": "filter",
                         "required": false,
-                        "description": "Filter post (Offer) by category",
-                        "example": "Antiques",
+                        "description": "Filter post (Offer) by category ID",
+                        "example": "5f3db1eda08e5600176a8a6f",
                         "schema": {
                             "type": "string"
                         }
@@ -394,14 +139,422 @@
                 }
             }
         },
+        "/blog/post/{id}/comments": {
+            "get": {
+                "tags": [
+                    "Posts (Offers)"
+                ],
+                "summary": "GET all comments for a post (Offer)",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "UUID of the post (Offer)",
+                        "example": "5f24853538aa947c343ee2c4",
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Comments fetched successfully."
+                                        },
+                                        "comments": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/Comments"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error."
+                    }
+                }
+            }
+        },
+        "/blog/post/{id}": {
+            "get": {
+                "tags": [
+                    "Posts (Offers)"
+                ],
+                "summary": "GET a post (Offer)",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "UUID of the post (Offer)",
+                        "example": "5f273aaeac8e6d2f9c184e46",
+                        "type": "string"
+                    }
+                ],
+                "requestBody": {
+                    "description": "None",
+                    "required": false
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Post fetched."
+                                        },
+                                        "post": {
+                                            "$ref": "#/definitions/Post"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error."
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Posts (Offers)"
+                ],
+                "summary": "Add comment to a post (Offer) | USER or ADMIN",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "UUID of the post (Offer)",
+                        "example": "5f70ac1d23fe710db496f86e",
+                        "type": "string"
+                    }
+                ],
+                "requestBody": {
+                    "description": "Comment object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "content": {
+                                        "type": "string",
+                                        "required": true,
+                                        "example": "Some comment here!"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "security": [
+                    {
+                        "baseUserSecurity": [
+                            "User",
+                            "Admin"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Comment created successfully!"
+                                        },
+                                        "comment": {
+                                            "$ref": "#/definitions/Comment"
+                                        },
+                                        "creator": {
+                                            "type": "string",
+                                            "required": true,
+                                            "format": "uuid",
+                                            "example": "5f359bcc26cf611a6010b82b"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error."
+                    }
+                }
+            }
+        },
+        "/blog/post/create": {
+            "post": {
+                "tags": [
+                    "Posts (Offers)"
+                ],
+                "summary": "CREATE a post (Offer) | USER or ADMIN",
+                "requestBody": {
+                    "description": "Post object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "required": true,
+                                        "example": "Old gramophone"
+                                    },
+                                    "category": {
+                                        "type": "string",
+                                        "required": true,
+                                        "format": "uuid",
+                                        "example": "5f39932f7bdea1c354fdbc37"
+                                    },
+                                    "content": {
+                                        "type": "string",
+                                        "required": true,
+                                        "example": "Vinyl Record Player,phonograph/gramophone record player power. Old fashioned Turntable antique copper big horn gramophone Retro Bluetooth Stereo. REMIUM SOUND QUALITY with minimum vibrations. It is perfect for your living room, bedroom or office and a great choice for vinyl lovers."
+                                    },
+                                    "price": {
+                                        "type": "number",
+                                        "required": true,
+                                        "example": 725
+                                    },
+                                    "image": {
+                                        "type": "string",
+                                        "required": true
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "security": [
+                    {
+                        "baseUserSecurity": [
+                            "User",
+                            "Admin"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Post created successfully!"
+                                        },
+                                        "post": {
+                                            "$ref": "#/definitions/Post"
+                                        },
+                                        "creator": {
+                                            "type": "object",
+                                            "properties": {
+                                                "userId": {
+                                                    "type": "string",
+                                                    "format": "uuid",
+                                                    "example": "5f3391e77bdea1c354fdbc32"
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "John"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error."
+                    }
+                }
+            }
+        },
+        "/blog/post/edit/{id}": {
+            "put": {
+                "tags": [
+                    "Posts (Offers)"
+                ],
+                "summary": "EDIT a post (Offer) | USER or ADMIN",
+                "requestBody": {
+                    "description": "Post object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "required": true,
+                                        "minLength": 6,
+                                        "example": "Old gramophone"
+                                    },
+                                    "category": {
+                                        "type": "string",
+                                        "required": true,
+                                        "example": "Antiques"
+                                    },
+                                    "content": {
+                                        "type": "string",
+                                        "required": true,
+                                        "minLength": 20,
+                                        "example": "Vinyl Record Player,phonograph/gramophone record player power. Old fashioned Turntable antique copper big horn gramophone Retro Bluetooth Stereo. REMIUM SOUND QUALITY with minimum vibrations. It is perfect for your living room, bedroom or office and a great choice for vinyl lovers."
+                                    },
+                                    "price": {
+                                        "type": "number",
+                                        "required": true,
+                                        "minimum": 1,
+                                        "example": 725
+                                    },
+                                    "image": {
+                                        "type": "string",
+                                        "required": true
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "security": [
+                    {
+                        "baseUserSecurity": [
+                            "User",
+                            "Admin"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Post updated!"
+                                        },
+                                        "post": {
+                                            "$ref": "#/definitions/Post"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error."
+                    }
+                }
+            }
+        },
+        "/blog/post/delete/{id}": {
+            "delete": {
+                "tags": [
+                    "Posts (Offers)"
+                ],
+                "summary": "DELETE a post (Offer) | USER or ADMIN",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "UUID of the post (Offer)",
+                        "example": "5f273aaeac8e6d2f9c184e46",
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "security": [
+                    {
+                        "baseUserSecurity": [
+                            "User",
+                            "Admin"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Post deleted successfully!"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error."
+                    }
+                }
+            }
+        },
         "/blog/posts": {
             "get": {
                 "tags": [
                     "Posts (Offers)"
                 ],
-                "summary": "GET user`s posts (Offers)",
+                "summary": "GET user`s posts (Offers) | USER or ADMIN",
                 "produces": [
                     "application/json"
+                ],
+                "security": [
+                    {
+                        "baseUserSecurity": [
+                            "User",
+                            "Admin"
+                        ]
+                    }
                 ],
                 "responses": {
                     "200": {
@@ -428,6 +581,92 @@
                     },
                     "500": {
                         "description": "Internal Server Error."
+                    }
+                }
+            }
+        },
+        "/blog/post/status": {
+            "get": {
+                "tags": [
+                    "Posts (Offers)"
+                ],
+                "summary": "Admin can change post (Offer) status to approved/disapproved | ADMIN",
+                "requestBody": {
+                    "description": "Post object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "postId": {
+                                        "type": "string",
+                                        "required": true,
+                                        "format": "uuid",
+                                        "example": "5f39932f7bdea1c354fdbc37"
+                                    },
+                                    "approval": {
+                                        "type": "boolean",
+                                        "required": true,
+                                        "example": true
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "security": [
+                    {
+                        "baseUserSecurity": [
+                            "Admin"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Offer approved!"
+                                        },
+                                        "posts": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/Post"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthorized!"
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Admin rights are required!"
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -541,6 +780,96 @@
                     "type": "string",
                     "required": true,
                     "example": "Antiques"
+                }
+            }
+        },
+        "Comment": {
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "5f70ac1d23fe710db496f86e"
+                },
+                "approval": {
+                    "type": "boolean",
+                    "example": false
+                },
+                "post": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "5f70ac1d23fe710db496f86e"
+                },
+                "user": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "5f359bcc26cf611a6010b82b"
+                },
+                "content": {
+                    "type": "string",
+                    "required": true,
+                    "example": "Some comment here!"
+                },
+                "author": {
+                    "type": "string",
+                    "example": "John"
+                },
+                "createdAt": {
+                    "type": "string",
+                    "example": "2020-09-27T15:13:33.343Z"
+                },
+                "updatedAt": {
+                    "type": "string",
+                    "example": "2020-09-27T15:15:21.534Z"
+                },
+                "__v": {
+                    "type": "number",
+                    "example": 2
+                }
+            }
+        },
+        "Comments": {
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "5f70ac1d23fe710db496f86e"
+                },
+                "approval": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "post": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "5f70ac1d23fe710db496f86e"
+                },
+                "user": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "5f359bcc26cf611a6010b82b"
+                },
+                "content": {
+                    "type": "string",
+                    "required": true,
+                    "example": "Some comment here!"
+                },
+                "author": {
+                    "type": "string",
+                    "example": "John"
+                },
+                "createdAt": {
+                    "type": "string",
+                    "example": "2020-09-27T15:13:33.343Z"
+                },
+                "updatedAt": {
+                    "type": "string",
+                    "example": "2020-09-27T15:15:21.534Z"
+                },
+                "__v": {
+                    "type": "number",
+                    "example": 2
                 }
             }
         }
