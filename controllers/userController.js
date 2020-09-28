@@ -10,10 +10,11 @@ const {decodeToken} = require('../middleware/authenticate');
 module.exports = {
 
   getUserById: (req, res, next) => {
+    //public
     let {userId} = req.params;
 
-    User.findById(userId)
-      .then((user) => {
+    User.findOne({_id: userId},['name', 'email', 'phone'])
+    .then((user) => {
 
         if (!user) {
           const error = new Error('User not found!');
@@ -22,7 +23,7 @@ module.exports = {
           error.param = 'Invalid id!';
           throw error;
         }
-
+        
         res
           .status(200)
           .json({message: 'User details fetched successfully.', user});
@@ -36,12 +37,19 @@ module.exports = {
       });
   },
   getUserDetails: (req, res, next) => {
-
-    User.findById(req.userId)
+    //private
+    User.findOne({_id:req.userId},[
+      'name', 
+      'email', 
+      'phone', 
+      'role',
+      'posts', 
+      'comments',
+      'favorites', 
+      'createdAt',
+      'updatedAt',
+    ])
       .then((userDetails) => {
-        
-        userDetails.hashedPassword = '********';
-        userDetails.salt = '********';
 
         res
           .status(200)
