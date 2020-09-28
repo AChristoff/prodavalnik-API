@@ -197,23 +197,36 @@ module.exports = {
           throw error;
       }
 
-      post.save()
-        .then(() => {
-          return User.findById(req.userId);
-        })
+      User.findById(req.userId)
         .then((user) => {
-          user.posts.push(post);
-          creator = user;
-          return user.save();
-        })
-        .then(() => {
-          res
-            .status(201)
-            .json({
-              message: 'Post created successfully!',
-              post: post,
-              creator: {userId: req.userId, name: creator.name}
+
+          if (user.posts.length >= 6) {
+            const error = new Error('Limit Reached! Max 6 offers!');
+            error.statusCode = 422;
+            throw error;
+          }
+
+          post
+            .save()
+            .then(() => {
+              user.posts.push(post);
+              creator = user;
+              return user.save();
             })
+            .then(() => {
+              res.status(201).json({
+                message: 'Post created successfully!',
+                post: post,
+                creator: { userId: req.userId, name: creator.name },
+              });
+            })
+            .catch((error) => {
+              if (!error.statusCode) {
+                error.statusCode = 500;
+              }
+
+              next(error);
+            });
         })
         .catch((error) => {
           if (!error.statusCode) {
