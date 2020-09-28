@@ -687,6 +687,7 @@
                                     "email": {
                                         "type": "string",
                                         "required": true,
+                                        "format": "email",
                                         "example": "jonh-doe@gmail.com"
                                     }
                                 }
@@ -814,6 +815,7 @@
                                     "email": {
                                         "type": "string",
                                         "required": true,
+                                        "format": "email",
                                         "example": "jonh-doe@gmail.com"
                                     },
                                     "password": {
@@ -887,6 +889,7 @@
                                     "email": {
                                         "type": "string",
                                         "required": true,
+                                        "format": "email",
                                         "example": "jonh-doe@gmail.com"
                                     }
                                 }
@@ -1019,6 +1022,158 @@
                                         },
                                         "userDetails": {
                                             "$ref": "#/definitions/User"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error."
+                    }
+                }
+            }
+        },
+        "/user/edit": {
+            "put": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "EDIT user | USER or ADMIN",
+                "requestBody": {
+                    "description": "User object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "required": true,
+                                        "format": "email",
+                                        "example": "jonh-doe@gmail.com"
+                                    },
+                                    "newPassword": {
+                                        "type": "string",
+                                        "required": false,
+                                        "example": "John#000"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "required": true,
+                                        "example": "John#909"
+                                    },
+                                    "phone": {
+                                        "type": "number",
+                                        "required": true,
+                                        "example": 888123321
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "security": [
+                    {
+                        "baseUserSecurity": [
+                            "User",
+                            "Admin"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Your details were changed successfully!"
+                                        },
+                                        "user": {
+                                            "type": "object",
+                                            "properties": {
+                                                "email": {
+                                                    "type": "string",
+                                                    "format": "email",
+                                                    "example": "jonh-doe@gmail.com"
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "John"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error."
+                    }
+                }
+            }
+        },
+        "/user/delete": {
+            "delete": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "DELETE user | USER or ADMIN",
+                "requestBody": {
+                    "description": "User object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "required": true,
+                                        "format": "email",
+                                        "example": "jonh-doe@gmail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "required": true,
+                                        "example": "John#909"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "security": [
+                    {
+                        "baseUserSecurity": [
+                            "User",
+                            "Admin"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User successfully deleted!"
                                         }
                                     }
                                 }
@@ -1270,6 +1425,7 @@
                 },
                 "email": {
                     "type": "string",
+                    "format": "email",
                     "example": "jonh-doe@gmail.com"
                 },
                 "phone": {
