@@ -6,9 +6,9 @@ module.exports = {
   createCategory: (req, res, next) => {
     if (validator(req, res)) {
       const {newCategory} = req.body;
-      const category = new Category({category: newCategory});
+      const category = new Category({name: newCategory});
 
-      Category.findOne({category: newCategory})
+      Category.findOne({name: newCategory})
         .then((cat) => {
         if (!cat) {
           category.save()
@@ -50,7 +50,7 @@ module.exports = {
 
       Category.findOne({ _id: categoryToEdit })
         .then((cat) => {
-          cat.category = newCategoryName;
+          cat.name = newCategoryName;
           cat
             .save()
             .then((c) => {

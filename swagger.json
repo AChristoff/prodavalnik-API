@@ -18,8 +18,7 @@
     ],
     "tags": [
         {
-            "name": "Posts (Offers)",
-            "description": "end-points"
+            "name": "Posts (Offers)"
         }
     ],
     "consumes": [
@@ -238,7 +237,7 @@
                 "tags": [
                     "Posts (Offers)"
                 ],
-                "summary": "Add comment to a post (Offer) | USER or ADMIN",
+                "summary": "Add comment to a post (Offer) | USER | ADMIN",
                 "parameters": [
                     {
                         "name": "id",
@@ -315,7 +314,7 @@
                 "tags": [
                     "Posts (Offers)"
                 ],
-                "summary": "CREATE a post (Offer) | USER or ADMIN",
+                "summary": "CREATE a post (Offer) | USER | ADMIN",
                 "requestBody": {
                     "description": "Post object",
                     "required": true,
@@ -410,7 +409,7 @@
                 "tags": [
                     "Posts (Offers)"
                 ],
-                "summary": "EDIT a post (Offer) | USER or ADMIN",
+                "summary": "EDIT a post (Offer) | USER | ADMIN",
                 "requestBody": {
                     "description": "Post object",
                     "required": true,
@@ -493,7 +492,7 @@
                 "tags": [
                     "Posts (Offers)"
                 ],
-                "summary": "DELETE a post (Offer) | USER or ADMIN",
+                "summary": "DELETE a post (Offer) | USER | ADMIN",
                 "parameters": [
                     {
                         "name": "id",
@@ -543,7 +542,7 @@
                 "tags": [
                     "Posts (Offers)"
                 ],
-                "summary": "GET user`s posts (Offers) | USER or ADMIN",
+                "summary": "GET user`s posts (Offers) | USER | ADMIN",
                 "produces": [
                     "application/json"
                 ],
@@ -589,7 +588,7 @@
                 "tags": [
                     "Posts (Offers)"
                 ],
-                "summary": "Admin can change post (Offer) status to approved/disapproved | ADMIN",
+                "summary": "Admin can change post (Offer) status to approved/disapproved | ADMIN only",
                 "requestBody": {
                     "description": "Post object",
                     "required": true,
@@ -996,7 +995,7 @@
                 "tags": [
                     "User"
                 ],
-                "summary": "",
+                "summary": "Get public user data",
                 "produces": [
                     "application/json"
                 ],
@@ -1055,7 +1054,7 @@
                 "tags": [
                     "User"
                 ],
-                "summary": "Get user data | USER or ADMIN",
+                "summary": "Get full user data | USER | ADMIN",
                 "produces": [
                     "application/json"
                 ],
@@ -1098,7 +1097,7 @@
                 "tags": [
                     "User"
                 ],
-                "summary": "DELETE user | USER or ADMIN",
+                "summary": "DELETE user | USER | ADMIN",
                 "requestBody": {
                     "description": "User object",
                     "required": true,
@@ -1162,7 +1161,7 @@
                 "tags": [
                     "User"
                 ],
-                "summary": "EDIT user | USER or ADMIN",
+                "summary": "EDIT user | USER | ADMIN",
                 "requestBody": {
                     "description": "User object",
                     "required": true,
@@ -1250,7 +1249,7 @@
                 "tags": [
                     "User"
                 ],
-                "summary": "Add a post (Offer) to user favorites list | USER or ADMIN",
+                "summary": "Add a post (Offer) to user favorites list | USER | ADMIN",
                 "requestBody": {
                     "description": "User object",
                     "required": true,
@@ -1313,7 +1312,7 @@
                 "tags": [
                     "User"
                 ],
-                "summary": "Remove a post (Offer) from user favorites list | USER or ADMIN",
+                "summary": "Remove a post (Offer) from user favorites list | USER | ADMIN",
                 "requestBody": {
                     "description": "User object",
                     "required": true,
@@ -1359,6 +1358,189 @@
                                             "type": "string",
                                             "format": "uuid",
                                             "example": "5f24193138aa947c343ee2c2"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error."
+                    }
+                }
+            }
+        },
+        "/category/create": {
+            "post": {
+                "tags": [
+                    "Category"
+                ],
+                "summary": "Create new category | ADMIN only",
+                "requestBody": {
+                    "description": "Category object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "newCategory": {
+                                        "type": "string",
+                                        "example": "Antiques"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "security": [
+                    {
+                        "baseUserSecurity": [
+                            "User",
+                            "Admin"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Category created successfully!"
+                                        },
+                                        "category": {
+                                            "$ref": "#/definitions/Category"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error."
+                    }
+                }
+            }
+        },
+        "/category/edit": {
+            "put": {
+                "tags": [
+                    "Category"
+                ],
+                "summary": "Edit category | ADMIN only",
+                "requestBody": {
+                    "description": "Category object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "categoryToEdit": {
+                                        "type": "string",
+                                        "format": "uuid",
+                                        "example": "5f3711e46bdea1c354fdbc55"
+                                    },
+                                    "newCategoryName": {
+                                        "type": "string",
+                                        "example": "Antiques"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "security": [
+                    {
+                        "baseUserSecurity": [
+                            "User",
+                            "Admin"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Category edited successfully!"
+                                        },
+                                        "category": {
+                                            "$ref": "#/definitions/Category"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error."
+                    }
+                }
+            }
+        },
+        "/category/delete": {
+            "delete": {
+                "tags": [
+                    "Category"
+                ],
+                "summary": "Delete category | ADMIN only",
+                "requestBody": {
+                    "description": "Category object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "category": {
+                                        "type": "string",
+                                        "format": "uuid",
+                                        "example": "5f3711e46bdea1c354fdbc55"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "security": [
+                    {
+                        "baseUserSecurity": [
+                            "User",
+                            "Admin"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Category was deleted successfully!"
                                         }
                                     }
                                 }
@@ -1480,6 +1662,10 @@
                     "type": "string",
                     "required": true,
                     "example": "Antiques"
+                },
+                "__v": {
+                    "type": "number",
+                    "example": 3
                 }
             }
         },
