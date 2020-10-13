@@ -20,9 +20,9 @@ app.use(bodyParser.json());
 routeInterceptor(app);
 generalErrors(app);
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.get('*', function(req, res) {
-    res.redirect('/api-docs');
+    res.redirect('/api/docs');
 });
 
 app.listen(port, () => {

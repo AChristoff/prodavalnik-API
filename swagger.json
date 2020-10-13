@@ -10,6 +10,9 @@
     },
     "servers": [
         {
+            "url": "http://87.121.112.27/api/docs/"
+        },
+        {
             "url": "https://aleksov.herokuapp.com"
         },
         {
