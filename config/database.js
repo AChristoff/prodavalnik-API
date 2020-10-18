@@ -18,7 +18,7 @@ async function initializeDataBase(connectionString) {
         
         User.seedAdmin()
             .then(() => {
-                console.log('Admin seeded!');
+                console.log('Data base ready!');
             }).catch((err) => {
             console.error(err);
         })
