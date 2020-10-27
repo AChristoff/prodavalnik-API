@@ -10,7 +10,7 @@
     },
     "servers": [
         {
-            "url": "http://87.121.112.27/api/"
+            "url": "http://prodavalnik-api.aleksov.work"
         },
         {
             "url": "https://aleksov.herokuapp.com"
