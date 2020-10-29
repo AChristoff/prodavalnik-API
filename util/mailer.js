@@ -4,16 +4,14 @@ module.exports = {
     sendEmail: (req, res, to, subject, html) => {
 
         let transporter = nodemailer.createTransport({
-            service: process.env.MAIL_SERVICE,
-            host: 'smtp.gmail.com',
+            host: 'smtp.zoho.com',
+            secure: true,
             port: 465,
-            secure: false,
             auth: {
                 user: process.env.MAIL_NAME,
                 pass: process.env.MAIL_PASSWORD,
             }
         });
-
 
         let mailOptions = {
             from: process.env.MAIL_NAME,
