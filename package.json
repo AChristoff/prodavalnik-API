@@ -22,6 +22,7 @@
     "jsonwebtoken": "8.4.0",
     "mongoose": "^5.7.5",
     "nodemailer": "^6.4.8",
+    "nodemon": "^2.0.6",
     "swagger-ui-express": "^4.1.4"
   }
 }
