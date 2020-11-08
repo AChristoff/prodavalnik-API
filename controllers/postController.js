@@ -345,11 +345,25 @@ module.exports = {
           p.content = post.content;
           p.category = post.category;
           p.price = post.price;
-          p.image = post.image;
 
           if (post.approval && isAdmin) {
             p.approval = post.approval;
           }
+
+          const imgData = post.image;
+          const base64Data = imgData.split(",")[1];
+          const imgUrl = `public/images/posts/${p.creator}_${Date.now()}.jpeg`
+ 
+          p.image = imgUrl;
+
+          fs.writeFile(imgUrl, base64Data, 'base64', function(err) {
+             
+            if (err) {
+              const error = new Error(err);
+              error.statusCode = 500;
+              throw error;
+            }
+          });
 
           return p.save();
         })
