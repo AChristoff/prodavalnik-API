@@ -3,6 +3,7 @@ const Post = require('../models/Post');
 const User = require('../models/User');
 const Comment = require('../models/Comment');
 const Category = require('../models/Category');
+const fs = require('fs');
 
 module.exports = {
   getPosts: (req, res, next) => {
@@ -206,27 +207,46 @@ module.exports = {
             throw error;
           }
 
-          post
-            .save()
-            .then(() => {
-              user.posts.push(post);
-              creator = user;
-              return user.save();
-            })
-            .then(() => {
-              res.status(201).json({
-                message: 'Post created successfully!',
-                post: post,
-                creator: { userId: req.userId, name: creator.name },
-              });
-            })
-            .catch((error) => {
-              if (!error.statusCode) {
-                error.statusCode = 500;
-              }
+          return user
+        })
+        .then((user) => {
+          
+          const imgData = req.body.image;
+          const base64Data = imgData.split(",")[1];
+          const imgUrl = `public/images/posts/${user._id}_${Date.now()}.jpeg`
+        
+          fs.writeFile(imgUrl, base64Data, 'base64', function(err) {
+            
+            if (err) {
+              const error = new Error(err);
+              error.statusCode = 500;
+              throw error;
+            }
 
-              next(error);
-            });
+            post.image = imgUrl;
+           
+            post
+              .save()
+              .then(() => {
+                user.posts.push(post);
+                creator = user;
+                return user.save();
+              })
+              .then(() => {
+                res.status(201).json({
+                  message: 'Post created successfully!',
+                  post: post,
+                  creator: { userId: req.userId, name: creator.name },
+                });
+              })
+              .catch((error) => {
+                if (!error.statusCode) {
+                  error.statusCode = 500;
+                }
+
+                next(error);
+              });
+          });
         })
         .catch((error) => {
           if (!error.statusCode) {
