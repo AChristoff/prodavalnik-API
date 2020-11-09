@@ -353,8 +353,17 @@ module.exports = {
           const imgData = post.image;
           const base64Data = imgData.split(",")[1];
           const imgUrl = `public/images/posts/${p.creator}_${Date.now()}.jpeg`
+          const oldImgUrl = `./${p.image}`
  
           p.image = imgUrl;
+
+          fs.unlink(oldImgUrl, (err) => {
+            if (err) {
+              const error = new Error(err);
+              error.statusCode = 500;
+              throw error;
+            }
+          })
 
           fs.writeFile(imgUrl, base64Data, 'base64', function(err) {
              
