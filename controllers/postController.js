@@ -360,29 +360,36 @@ module.exports = {
           if (post.approval && isAdmin) {
             p.approval = post.approval;
           }
-          
-          //delete old image
-          const imgData = post.image;
-          const base64Data = imgData.split(",")[1];
-          const imgUrl = `public/images/posts/${p.creator}_${Date.now()}.jpeg`
-          const oldImgUrl = `./${p.image}`
- 
-          p.image = imgUrl;
 
-          fs.unlink(oldImgUrl, (err) => {
-            if (err) {
-              console.log(err);
-            }
-          })
-          //save new image
-          fs.writeFile(imgUrl, base64Data, 'base64', function(err) {
-             
-            if (err) {
-              const error = new Error(err);
-              error.statusCode = 500;
-              throw error;
-            }
-          });
+          const regExp = /^public\/images\/posts\/(\w)+.jpeg$/g;
+          const notBase64 = regExp.test(post.image);
+
+          if (notBase64) {
+            p.image = post.image;
+          } else {
+            //delete old image
+            const imgData = post.image;
+            const base64Data = imgData.split(",")[1];
+            const imgUrl = `public/images/posts/${p.creator}_${Date.now()}.jpeg`
+            const oldImgUrl = `./${p.image}`
+  
+            p.image = imgUrl;
+
+            fs.unlink(oldImgUrl, (err) => {
+              if (err) {
+                console.log(err);
+              }
+            })
+            //save new image
+            fs.writeFile(imgUrl, base64Data, 'base64', function(err) {
+              
+              if (err) {
+                const error = new Error(err);
+                error.statusCode = 500;
+                throw error;
+              }
+            });
+          }
 
           return p.save();
         })
