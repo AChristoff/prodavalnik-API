@@ -210,7 +210,7 @@ module.exports = {
           return user
         })
         .then((user) => {
-          
+          //save image
           const imgData = req.body.image;
           const base64Data = imgData.split(",")[1];
           const imgUrl = `public/images/posts/${user._id}_${Date.now()}.jpeg`
@@ -224,7 +224,8 @@ module.exports = {
             }
 
             post.image = imgUrl;
-           
+
+            // save post
             post
               .save()
               .then(() => {
@@ -274,6 +275,16 @@ module.exports = {
           error.param = 'Only the author or admin can delete the post!';
           throw error;
         }
+
+        //delete post image
+        const imgUrl = post.image;
+        fs.unlink(imgUrl, (err) => {
+          if (err) {
+            const error = new Error(err);
+            error.statusCode = 500;
+            throw error;
+          }
+        })
 
         return Post.findByIdAndDelete(postId);
       })
@@ -345,11 +356,35 @@ module.exports = {
           p.content = post.content;
           p.category = post.category;
           p.price = post.price;
-          p.image = post.image;
 
           if (post.approval && isAdmin) {
             p.approval = post.approval;
           }
+          
+          //delete old image
+          const imgData = post.image;
+          const base64Data = imgData.split(",")[1];
+          const imgUrl = `public/images/posts/${p.creator}_${Date.now()}.jpeg`
+          const oldImgUrl = `./${p.image}`
+ 
+          p.image = imgUrl;
+
+          fs.unlink(oldImgUrl, (err) => {
+            if (err) {
+              const error = new Error(err);
+              error.statusCode = 500;
+              throw error;
+            }
+          })
+          //save new image
+          fs.writeFile(imgUrl, base64Data, 'base64', function(err) {
+             
+            if (err) {
+              const error = new Error(err);
+              error.statusCode = 500;
+              throw error;
+            }
+          });
 
           return p.save();
         })
