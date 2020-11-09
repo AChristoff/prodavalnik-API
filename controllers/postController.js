@@ -3,7 +3,7 @@ const Post = require('../models/Post');
 const User = require('../models/User');
 const Comment = require('../models/Comment');
 const Category = require('../models/Category');
-const fs = require('fs');
+const fs = require('fs').promises;
 
 module.exports = {
   getPosts: (req, res, next) => {
@@ -357,22 +357,17 @@ module.exports = {
  
           p.image = imgUrl;
 
-          fs.unlink(oldImgUrl, (err) => {
-            if (err) {
+          fs.writeFile(imgUrl, base64Data, 'base64')
+            .then(() => {
+              fs.unlink(oldImgUrl, (err) => {
+                return err;
+              });
+            })
+            .catch((err) => {
               const error = new Error(err);
-              error.statusCode = 500;
-              throw error;
-            }
-          })
-
-          fs.writeFile(imgUrl, base64Data, 'base64', function(err) {
-             
-            if (err) {
-              const error = new Error(err);
-              error.statusCode = 500;
-              throw error;
-            }
-          });
+                error.statusCode = 500;
+                throw error;
+            });
 
           return p.save();
         })
