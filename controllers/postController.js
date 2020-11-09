@@ -361,7 +361,7 @@ module.exports = {
             p.approval = post.approval;
           }
 
-          const regExp = /^public\/images\/posts\/(\w)+.jpeg$/g;
+          const regExp = /public\/images\/posts\/(\w)+.jpeg/g;
           const notBase64 = regExp.test(post.image);
 
           if (notBase64) {
@@ -386,6 +386,7 @@ module.exports = {
               if (err) {
                 const error = new Error(err);
                 error.statusCode = 500;
+                error.message = 'String is not Base64';
                 throw error;
               }
             });
