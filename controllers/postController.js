@@ -371,9 +371,7 @@ module.exports = {
 
           fs.unlink(oldImgUrl, (err) => {
             if (err) {
-              const error = new Error(err);
-              error.statusCode = 500;
-              throw error;
+              console.log(err);
             }
           })
           //save new image
