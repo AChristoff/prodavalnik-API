@@ -280,9 +280,7 @@ module.exports = {
         const imgUrl = post.image;
         fs.unlink(imgUrl, (err) => {
           if (err) {
-            const error = new Error(err);
-            error.statusCode = 500;
-            throw error;
+            console.log(err);
           }
         })
 
@@ -361,36 +359,34 @@ module.exports = {
             p.approval = post.approval;
           }
 
-          const regExp = /public\/images\/posts\/(\w)+.jpeg/g;
+          const regExp = /^public\/images\/posts\/(\w)+.jpeg$/g;
           const notBase64 = regExp.test(post.image);
 
           if (notBase64) {
-            // p.image = post.image;
-            p.image = 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSMUcAx4236U3GeFwC5IFIaKzKv9D8awsVUVA&usqp=CAU';
+            p.image = post.image;
           } else {
             //delete old image
-            p.image = 'https://blog.crossbrowsertesting.com/wp-content/uploads/2017/08/080317_Bug.png'
-            // const imgData = post.image;
-            // const base64Data = imgData.split(",")[1];
-            // const imgUrl = `public/images/posts/${p.creator}_${Date.now()}.jpeg`
-            // const oldImgUrl = `./${p.image}`
+            const imgData = post.image;
+            const base64Data = imgData.split(",")[1];
+            const imgUrl = `public/images/posts/${p.creator}_${Date.now()}.jpeg`
+            const oldImgUrl = `./${p.image}`
   
-            // p.image = imgUrl;
+            p.image = imgUrl;
 
-            // fs.unlink(oldImgUrl, (err) => {
-            //   if (err) {
-            //     console.log(err);
-            //   }
-            // })
-            // //save new image
-            // fs.writeFile(imgUrl, base64Data, 'base64', function(err) {
+            fs.unlink(oldImgUrl, (err) => {
+              if (err) {
+                console.log(err);
+              }
+            })
+            //save new image
+            fs.writeFile(imgUrl, base64Data, 'base64', function(err) {
               
-            //   if (err) {
-            //     const error = new Error(err);
-            //     error.statusCode = 500;
-            //     throw error;
-            //   }
-            // });
+              if (err) {
+                const error = new Error(err);
+                error.statusCode = 500;
+                throw error;
+              }
+            });
           }
 
           return p.save();

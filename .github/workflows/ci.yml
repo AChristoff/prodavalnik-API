@@ -27,3 +27,6 @@ jobs:
     
     - name: Install
       run: npm install
+
+    - name: Restart
+      run: sudo pm2 restart index  
