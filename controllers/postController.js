@@ -218,9 +218,7 @@ module.exports = {
           fs.writeFile(imgUrl, base64Data, 'base64', function(err) {
             
             if (err) {
-              const error = new Error(err);
-              error.statusCode = 500;
-              throw error;
+              console.log(err);
             }
 
             post.image = imgUrl;

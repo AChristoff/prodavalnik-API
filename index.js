@@ -15,7 +15,7 @@ const swaggerDocument = require('./swagger.json');
 initializeDataBase(connectionString);
 CORS(app);
 
-app.use(bodyParser.json({limit: '2mb'}));
+app.use(bodyParser.json({limit: '6mb'}));
 
 routeInterceptor(app);
 generalErrors(app);
