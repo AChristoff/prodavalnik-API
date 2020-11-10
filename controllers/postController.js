@@ -365,7 +365,8 @@ module.exports = {
           const notBase64 = regExp.test(post.image);
 
           if (notBase64) {
-            p.image = post.image;
+            // p.image = post.image;
+            p.image = 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSMUcAx4236U3GeFwC5IFIaKzKv9D8awsVUVA&usqp=CAU';
           } else {
             //delete old image
             p.image = 'https://blog.crossbrowsertesting.com/wp-content/uploads/2017/08/080317_Bug.png'
